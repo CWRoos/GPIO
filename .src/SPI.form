@@ -4,7 +4,8 @@
   MoveScaled(46.8571,14.1429,69,66)
   Text = ("SPI Controll")
   Icon = Picture["gpio.png"]
-  { Button1 Button
+  Resizable = False
+  { Buttoncl Button
     MoveScaled(48,59,16,4)
     Text = ("Close")
   }

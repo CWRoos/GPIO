@@ -30,12 +30,17 @@ Public Sub valcheck(data As String, range As String) As Integer
   Return 0
 End
 
+Public Sub Form_Close()
+  
+  Button1_Click()
+  
+End
 
 Public Sub Button1_Click()
 
   FMain.Timer1.Enabled = FMain.st
   FMain.CheckBox1.Value = FMain.st
-  Me.Close
+  I2C.Close
 
 End
 

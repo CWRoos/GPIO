@@ -4,6 +4,7 @@
   MoveScaled(17.8571,15.1429,127,64)
   Text = ("I2C Controll")
   Icon = Picture["gpio.png"]
+  Resizable = False
   { Button1 Button
     MoveScaled(109,58,16,4)
     Text = ("Close")

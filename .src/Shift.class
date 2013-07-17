@@ -17,8 +17,14 @@ Public Sub Button4_Click()
 
   FMain.Timer1.Enabled = FMain.st
   FMain.CheckBox1.Value = FMain.st
-  Me.Close
+  Shift.Close
 
+End
+
+Public Sub Form_Close()
+  
+  Button4_Click()
+  
 End
 
 Public Sub Button1_Click()
@@ -91,3 +97,5 @@ Public Sub choice_Click()
   End Select
   senddata.SetFocus()
 End
+
+

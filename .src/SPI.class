@@ -8,13 +8,19 @@ Public Extern wiringPiSPIDataRW(channel As Integer, data As Pointer, leng As Int
 Public buf As Pointer
 Public fd As Integer
 
-Public Sub Button1_Click()
+Public Sub Buttoncl_Click()
 
+Form_Close()
+
+End
+
+Public Sub Form_Close()
+  
   FMain.Timer1.Enabled = FMain.st
   FMain.CheckBox1.Value = FMain.st
-  Free(buf)
-  Me.Close
-
+'   Free(buf)
+  SPI.Close
+    
 End
 
 Public Sub Form_Open()

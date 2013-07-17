@@ -4,6 +4,7 @@
   MoveScaled(38.8571,29.1429,83,38)
   Text = ("Shift Controll")
   Icon = Picture["gpio.png"]
+  Resizable = False
   { Panel2 Panel
     MoveScaled(1,19,80,11)
   }

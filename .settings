@@ -8,9 +8,9 @@ Count=0
 Geometry=[0,0,210,210]
 
 [OpenFile]
-Active=1
 File[1]=".src/SPI.form"
-File[2]=".src/SPI.class:28.2"
+Active=2
+File[2]=".src/SPI.class:20.13"
 Count=2
 
 [Watches]
