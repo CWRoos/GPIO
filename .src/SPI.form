@@ -1,0 +1,73 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(46.8571,14.1429,69,66)
+  Text = ("SPI Controll")
+  Icon = Picture["gpio.png"]
+  { Button1 Button
+    MoveScaled(48,59,16,4)
+    Text = ("Close")
+  }
+  { output TextArea
+    MoveScaled(5,18,59,40)
+    Font = Font["Monospace"]
+  }
+  { Button2 Button
+    MoveScaled(6,2,11,4)
+    Text = ("Setup")
+  }
+  { Label1 Label
+    MoveScaled(6,14,13,3)
+    Text = ("Buffer     Size")
+  }
+  { leng SpinBox
+    MoveScaled(19,14,9,3)
+    MaxValue = 4096
+    Value = 255
+  }
+  { Label2 Label
+    MoveScaled(21,3,9,3)
+    Text = ("Channel")
+  }
+  { setupchan SpinBox
+    MoveScaled(30,3,5,3)
+    MaxValue = 1
+  }
+  { Label3 Label
+    MoveScaled(38,3,6,3)
+    Text = ("Speed")
+  }
+  { speed SpinBox
+    MoveScaled(46,3,17,3)
+    MinValue = 500000
+    MaxValue = 32000000
+    Step = 100000
+    Value = 10000000
+  }
+  { Button3 Button
+    MoveScaled(6,8,16,4)
+    Text = ("Write / Read")
+  }
+  { Label4 Label
+    MoveScaled(23,9,9,3)
+    Text = ("Channel")
+  }
+  { rwchan SpinBox
+    MoveScaled(32,9,5,3)
+    MaxValue = 1
+  }
+  { Button4 Button
+    MoveScaled(5,59,16,4)
+    Text = ("Load File")
+  }
+  { ish ComboBox
+    MoveScaled(49,14,14,3)
+    ReadOnly = True
+    List = [("HEX"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { Label5 Label
+    MoveScaled(38,14,10,3)
+    Text = ("Dsplay as")
+  }
+}

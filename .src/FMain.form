@@ -1,0 +1,918 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(17.8571,7.1429,127,80)
+  Icon = Picture["gpio.png"]
+  Resizable = False
+  { Panel1 Panel
+    MoveScaled(0,1,9,8)
+    { IN0 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT0 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { !Timer1 #Timer
+    #MoveScaled(120,73)
+    #Public = True
+    Enabled = True
+    Delay = 100
+  }
+  { Draw0 DrawingArea
+    MoveScaled(16,1,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED0 PictureBox
+    MoveScaled(11,4,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel2 Panel
+    MoveScaled(112,0,14,10)
+    { poff0 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup0 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn0 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Panel3 Panel
+    MoveScaled(16,1,13,8)
+    { zero0 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus0 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel4 Panel
+    MoveScaled(32,0,37,9)
+    { spwmslid0 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon0 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm0 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval0 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel5 Panel
+    MoveScaled(72,0,40,9)
+    { stonesl0 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone0 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone0 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval0 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Draw1 DrawingArea
+    MoveScaled(16,10,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED1 PictureBox
+    MoveScaled(11,13,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel6 Panel
+    MoveScaled(16,10,13,8)
+    { zero1 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus1 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel7 Panel
+    MoveScaled(72,9,40,9)
+    { RadioButton1 RadioButton
+      MoveScaled(0,2,15,4)
+      Visible = False
+      Text = ("Balanced")
+    }
+    { RadioButton2 RadioButton
+      MoveScaled(0,5,15,4)
+      Visible = False
+      Text = ("Mark Space")
+    }
+  }
+  { Panel8 Panel
+    MoveScaled(0,10,9,8)
+    { IN1 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT1 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel9 Panel
+    MoveScaled(32,9,38,9)
+    { spwmslid1 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 1024
+      Value = 512
+    }
+    { spwmon1 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm1 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Hard PWM")
+    }
+    { pwmval1 TextBox
+      MoveScaled(32,4,6,3)
+      Visible = False
+      Text = ("1024")
+      ReadOnly = True
+    }
+  }
+  { Panel10 Panel
+    MoveScaled(112,9,14,10)
+    { poff1 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup1 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn1 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw2 DrawingArea
+    MoveScaled(16,19,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED2 PictureBox
+    MoveScaled(11,22,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel11 Panel
+    MoveScaled(16,19,13,8)
+    { zero2 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus2 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel12 Panel
+    MoveScaled(72,18,40,9)
+    { stonesl2 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone2 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone2 Label
+      MoveScaled(4,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval2 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Panel13 Panel
+    MoveScaled(0,19,9,8)
+    { IN2 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT2 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel14 Panel
+    MoveScaled(32,18,37,9)
+    { spwmslid2 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon2 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm2 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval2 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel15 Panel
+    MoveScaled(112,18,14,10)
+    { poff2 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup2 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn2 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw3 DrawingArea
+    MoveScaled(16,28,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED3 PictureBox
+    MoveScaled(11,31,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel16 Panel
+    MoveScaled(16,28,13,8)
+    { zero3 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus3 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel17 Panel
+    MoveScaled(72,27,40,9)
+    { stonesl3 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone3 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone3 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval3 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Panel18 Panel
+    MoveScaled(0,28,9,8)
+    { IN3 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT3 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel19 Panel
+    MoveScaled(32,27,37,9)
+    { spwmslid3 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon3 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm3 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval3 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel20 Panel
+    MoveScaled(112,27,14,10)
+    { poff3 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup3 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn3 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw4 DrawingArea
+    MoveScaled(16,37,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED4 PictureBox
+    MoveScaled(11,40,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel21 Panel
+    MoveScaled(16,37,13,8)
+    { zero4 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus4 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel22 Panel
+    MoveScaled(72,36,40,9)
+    { stonesl4 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone4 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone4 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval4 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Panel23 Panel
+    MoveScaled(0,37,9,8)
+    { IN4 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT4 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel24 Panel
+    MoveScaled(32,36,37,9)
+    { spwmslid4 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon4 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm4 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval4 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel25 Panel
+    MoveScaled(112,36,14,10)
+    { poff4 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup4 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn4 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw5 DrawingArea
+    MoveScaled(16,46,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED5 PictureBox
+    MoveScaled(11,49,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel26 Panel
+    MoveScaled(16,46,13,8)
+    { zero5 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus5 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel27 Panel
+    MoveScaled(72,45,40,9)
+    { stonesl5 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone5 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone5 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval5 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Panel28 Panel
+    MoveScaled(0,46,9,8)
+    { IN5 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT5 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel29 Panel
+    MoveScaled(32,45,37,9)
+    { spwmslid5 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon5 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm5 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval5 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel30 Panel
+    MoveScaled(112,45,14,10)
+    { poff5 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup5 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn5 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw6 DrawingArea
+    MoveScaled(16,55,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED6 PictureBox
+    MoveScaled(11,58,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel31 Panel
+    MoveScaled(16,55,13,8)
+    { zero6 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus6 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel32 Panel
+    MoveScaled(72,54,40,9)
+    { stonesl6 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      MaxValue = 5000
+      Value = 2500
+    }
+    { softone6 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labeltone6 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software Tone")
+    }
+    { stoneval6 TextBox
+      MoveScaled(32,4,7,3)
+      Visible = False
+      Text = ("2500")
+      ReadOnly = True
+    }
+  }
+  { Panel33 Panel
+    MoveScaled(0,55,9,8)
+    { IN6 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT6 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel34 Panel
+    MoveScaled(32,54,37,9)
+    { spwmslid6 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon6 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm6 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval6 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel35 Panel
+    MoveScaled(112,54,14,10)
+    { poff6 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup6 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn6 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Draw7 DrawingArea
+    MoveScaled(16,64,94.2857,8)
+    Background = &H000000&
+    Cached = True
+  }
+  { LED7 PictureBox
+    MoveScaled(11,67,3,3)
+    Picture = Picture["ledoff.png"]
+  }
+  { Panel36 Panel
+    MoveScaled(16,64,13,8)
+    { zero7 RadioButton
+      MoveScaled(1,1,10,4)
+      Visible = False
+      Text = ("Low 0")
+      Value = True
+    }
+    { plus7 RadioButton
+      MoveScaled(1,4,11,4)
+      Visible = False
+      Text = ("High 1")
+    }
+  }
+  { Panel37 Panel
+    MoveScaled(72,63,40,9)
+    { softone7 CheckBox
+      MoveScaled(4,4,14,3)
+      Visible = False
+      Text = ("GPIO Clock")
+    }
+  }
+  { Panel38 Panel
+    MoveScaled(0,64,9,8)
+    { IN7 RadioButton
+      MoveScaled(1,1,8,4)
+      Text = ("IN")
+      Value = True
+    }
+    { OUT7 RadioButton
+      MoveScaled(1,4,9,4)
+      Text = ("OUT")
+    }
+  }
+  { Panel39 Panel
+    MoveScaled(32,63,37,9)
+    { spwmslid7 Slider
+      MoveScaled(10,4,20,4)
+      Visible = False
+      Value = 50
+    }
+    { spwmon7 CheckBox
+      MoveScaled(2,4,7,4)
+      Visible = False
+      Text = ("On")
+    }
+    { Labelpwm7 Label
+      MoveScaled(2,1,24,3)
+      Visible = False
+      Text = ("Software PWM")
+    }
+    { pwmval7 TextBox
+      MoveScaled(32,4,4,3)
+      Visible = False
+      Text = ("50")
+      ReadOnly = True
+    }
+  }
+  { Panel40 Panel
+    MoveScaled(112,63,14,10)
+    { poff7 RadioButton
+      MoveScaled(2,0,24,4)
+      Text = ("TriState")
+    }
+    { pup7 RadioButton
+      MoveScaled(2,3,24,4)
+      Text = ("PullUP")
+    }
+    { pdwn7 RadioButton
+      MoveScaled(2,6,24,4)
+      Text = ("PullDwn")
+    }
+  }
+  { Separator1 Separator
+    MoveScaled(-4,9,136,1)
+  }
+  { Separator2 Separator
+    MoveScaled(-2,18,138,1)
+  }
+  { Separator3 Separator
+    MoveScaled(-1,27,136,1)
+  }
+  { Separator4 Separator
+    MoveScaled(-1,36,136,1)
+  }
+  { Separator5 Separator
+    MoveScaled(-2,45,136,1)
+  }
+  { Separator6 Separator
+    MoveScaled(-1,54,136,1)
+  }
+  { Separator7 Separator
+    MoveScaled(-3,63,136,1)
+  }
+  { Separator8 Separator
+    MoveScaled(-1,72,136,1)
+  }
+  { Separator9 Separator
+    MoveScaled(0,0,136,1)
+  }
+  { SpinBox1 SpinBox
+    MoveScaled(19,76,8,3)
+    MinValue = 50
+    MaxValue = 500
+    Value = 100
+  }
+  { Label1 Label
+    MoveScaled(12,76,7,3)
+    Text = ("Speed")
+  }
+  { Label2 Label
+    MoveScaled(12,1,2,3)
+    Text = ("0")
+  }
+  { Label3 Label
+    MoveScaled(12,10,2,3)
+    Text = ("1")
+  }
+  { Label4 Label
+    MoveScaled(12,19,2,3)
+    Text = ("2")
+  }
+  { Label5 Label
+    MoveScaled(12,28,2,3)
+    Text = ("3")
+  }
+  { Label6 Label
+    MoveScaled(12,37,2,3)
+    Text = ("4")
+  }
+  { Label7 Label
+    MoveScaled(12,46,2,3)
+    Text = ("5")
+  }
+  { Label8 Label
+    MoveScaled(12,55,2,3)
+    Text = ("6")
+  }
+  { Label9 Label
+    MoveScaled(12,64,2,3)
+    Text = ("7")
+  }
+  { Label10 Label
+    MoveScaled(27,76,4,4)
+    Text = ("Ms")
+  }
+  { Button1 Button
+    MoveScaled(114,75,10,4)
+    Text = ("Exit")
+  }
+  { range Label
+    MoveScaled(93,11,7,3)
+    Visible = False
+    Text = ("Range")
+  }
+  { divisor Label
+    MoveScaled(93,14,7,3)
+    Visible = False
+    Text = ("Divisor")
+  }
+  { rangspin SpinBox
+    MoveScaled(100,11,9,3)
+    Visible = False
+    MinValue = 10
+    MaxValue = 1024
+    Value = 1024
+  }
+  { divspin SpinBox
+    MoveScaled(100,14,9,3)
+    Visible = False
+    MinValue = 1
+    MaxValue = 4095
+    Value = 1
+  }
+  { clcfreq Label
+    MoveScaled(91,67,10,3)
+    Visible = False
+    Text = ("Frequency")
+  }
+  { clcspin SpinBox
+    MoveScaled(102,67,8,3)
+    Visible = False
+    MinValue = 1
+    MaxValue = 192
+    Value = 100
+  }
+  { !CheckBox1 CheckBox
+    MoveScaled(1,76,10,3)
+    #Public = True
+    Text = ("Enable")
+    Value = CheckBox.True
+  }
+  { Separator10 Separator
+    MoveScaled(31,72.1429,1,8.5714)
+  }
+  { Label11 Label
+    MoveScaled(2,73,12,2)
+    Text = ("Analizer")
+  }
+  { Separator11 Separator
+    MoveScaled(110,72.1429,1,8)
+  }
+  { Button2 Button
+    MoveScaled(36,75,16,4)
+    Text = ("Shift")
+  }
+  { Button3 Button
+    MoveScaled(63,75,16,4)
+    Text = ("I2C")
+  }
+  { Button4 Button
+    MoveScaled(90,75,16,4)
+    Text = ("SPI")
+  }
+}

@@ -1,0 +1,769 @@
+' Gambas class file
+
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern wiringPiI2CSetup(devId As Integer) As Integer
+Public Extern wiringPiI2CRead(fd As Integer) As Integer
+Public Extern wiringPiI2CWrite(fd As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CWriteReg8(fd As Integer, reg As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CWriteReg16(fd As Integer, reg As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CReadReg8(fd As Integer, reg As Integer) As Integer
+Public Extern wiringPiI2CReadReg16(fd As Integer, reg As Integer) As Integer
+
+Public fd[4] As Integer
+Public data[4] As Integer
+Public regdata[4] As Long
+Public regnr[4] As Integer
+
+Public Sub valcheck(data As String, range As String) As Integer
+  
+  Select Case range
+    Case "HEX" 
+       If (Val("&H" & data) = Null)
+         Return 1
+       Endif
+    Case "Decimal"
+       If (Val(data) = Null)
+         Return 1
+       Endif
+  End Select  
+  Return 0
+End
+
+
+Public Sub Button1_Click()
+
+  FMain.Timer1.Enabled = FMain.st
+  FMain.CheckBox1.Value = FMain.st
+  Me.Close
+
+End
+
+Public Sub Form_Open()
+
+ Shell ("gpio load i2c")
+ Shell ("gpio i2cdetect") To Result.Text
+
+End
+
+Public Sub open0_Click()
+
+  fd[0] = wiringPiI2CSetup(Val("&H" & devnumber0.Text))
+  If (fd[0] = -1)
+    Return
+  Else
+    rdd0.Enabled = True
+    wdd0.Enabled = True
+    rrr0.Enabled = True
+    rrw0.Enabled = True
+    open0.Enabled = False
+  Endif
+
+End
+
+Public Sub choiced0_Click()
+  Select Case choiced0.Text
+    Case "HEX" 
+       data0.MaxLength = 2 
+       data0.Text = Hex$(data[0], 2)
+    Case "Decimal"
+       data0.MaxLength = 3 
+       data0.Text = data[0]
+    Case "ASCII"
+       data0.MaxLength = 1 
+       data0.Text = Chr$(data[0])
+  End Select
+  data0.SetFocus()
+
+End
+
+Public Sub data0_KeyRelease()
+
+  If (valcheck(data0.Text, choiced0.Text) = 1)
+    data0.text = ""
+    Return
+  Endif
+  Select Case choiced0.Text
+    Case "HEX" 
+       data[0] = Val("&H" & data0.Text)
+    Case "Decimal"
+       data[0] = Val(data0.Text) And 255
+    Case "ASCII"
+       data[0] = Asc(data0.Text)
+  End Select  
+
+End
+
+Public Sub choicerd0_Click()
+
+    Dim m As Integer = 1
+    If (reg160.Value)
+      m = 2
+    Endif
+  Select Case choicerd0.Text
+    Case "HEX" 
+       regdata0.MaxLength = 2 * m
+       regdata0.Text = Hex$(regdata[0], 2 * m)
+    Case "Decimal"
+       regdata0.MaxLength = 3
+       If (m = 2) Then regdata0.MaxLength = 5
+       regdata0.Text = regdata[0]
+    Case "ASCII"
+       regdata0.MaxLength = 1 * m
+       regdata0.Text = Chr$(regdata[0] And 255)
+       If m = 2 And If regdata[0] > 255
+        regdata0.Text = Chr$(regdata[0] / 256) & regdata0.Text
+       Endif
+  End Select
+  regdata0.SetFocus()
+
+End
+
+Public Sub regdata0_KeyRelease()
+
+    Dim m As Long = 255
+    If (reg160.Value)
+      m = 65535
+    Endif
+  If (valcheck(regdata0.Text, choicerd0.Text) = 1)
+    regdata0.text = ""
+    Return
+  Endif 
+  Select Case choicerd0.Text
+    Case "HEX" 
+       regdata[0] = Abs(Val("&H" & regdata0.Text))
+    Case "Decimal"
+       regdata[0] = Val(regdata0.Text) And m
+    Case "ASCII"
+       regdata[0] = Asc(regdata0.Text)
+       If (reg160.Value) And If (Len(regdata0.Text) > 1)
+        regdata[0] = Asc(Right$(regdata0.Text)) + (regdata[0] * 256)
+       Endif
+       
+  End Select  
+
+End
+
+Public Sub choicere0_Click()
+
+    Select Case choicere0.Text
+    Case "HEX" 
+       regnr0.MaxLength = 2 
+       regnr0.Text = Hex$(regnr[0], 2)
+    Case "Decimal"
+       regnr0.MaxLength = 3 
+       regnr0.Text = regnr[0]
+  End Select
+  regdata0.SetFocus()
+
+End
+
+Public Sub regnr0_KeyRelease()
+
+  Select Case choicere0.Text
+    Case "HEX" 
+       regnr[0] = Val("&H" & regnr0.Text)
+    Case "Decimal"
+       regnr[0] = Val(regnr0.Text) And 255
+  End Select  
+  
+
+End
+
+Public Sub reg80_Click()
+
+    regdata[0] = regdata[0] And 255
+    choicerd0_Click()
+    
+End
+
+Public Sub reg160_Click()
+
+    choicerd0_Click()
+
+End
+
+Public Sub rdd0_Click()
+
+  Dim inp As Integer
+  inp = wiringPiI2CRead(fd[0])
+   If inp = -1 Then Return
+  data[0] = inp
+  choiced0_Click()
+  
+End
+
+Public Sub wdd0_Click()
+
+  wiringPiI2CWrite(fd[0], data[0])
+
+End
+
+
+
+Public Sub rrr0_Click()
+
+  Dim inp As Integer
+  
+  If (reg160.Value)
+    inp = wiringPiI2CReadReg16(fd[0], regnr[0])
+  Else 
+    inp = wiringPiI2CReadReg8(fd[0], regnr[0])
+  Endif
+   If inp = -1 Then Return
+  regdata[0] = inp
+  choicerd0_Click()
+ 
+End
+
+Public Sub rrw0_Click()
+
+  If (reg160.Value)
+    wiringPiI2CWriteReg16(fd[0], regnr[0], regdata[0])
+  Else 
+    wiringPiI2CWriteReg8(fd[0], regnr[0], regdata[0])
+  Endif 
+
+End
+
+Public Sub open1_Click()
+
+  fd[1] = wiringPiI2CSetup(Val("&H" & devnumber1.Text))
+  If (fd[1] = -1)
+    Return
+  Else
+    rdd1.Enabled = True
+    wdd1.Enabled = True
+    rrr1.Enabled = True
+    rrw1.Enabled = True
+    open1.Enabled = False
+  Endif
+
+End
+
+Public Sub choiced1_Click()
+  Select Case choiced1.Text
+    Case "HEX" 
+       data1.MaxLength = 2 
+       data1.Text = Hex$(data[1], 2)
+    Case "Decimal"
+       data1.MaxLength = 3 
+       data1.Text = data[1]
+    Case "ASCII"
+       data1.MaxLength = 1 
+       data1.Text = Chr$(data[1])
+  End Select
+  data1.SetFocus()
+
+End
+
+Public Sub data1_KeyRelease()
+
+  If (valcheck(data1.Text, choiced1.Text) = 1)
+    data1.text = ""
+    Return
+  Endif
+  Select Case choiced1.Text
+    Case "HEX" 
+       data[1] = Val("&H" & data1.Text)
+    Case "Decimal"
+       data[1] = Val(data1.Text) And 255
+    Case "ASCII"
+       data[1] = Asc(data1.Text)
+  End Select  
+
+End
+
+Public Sub choicerd1_Click()
+
+    Dim m As Integer = 1
+    If (reg161.Value)
+      m = 2
+    Endif
+  Select Case choicerd1.Text
+    Case "HEX" 
+       regdata1.MaxLength = 2 * m
+       regdata1.Text = Hex$(regdata[1], 2 * m)
+    Case "Decimal"
+       regdata1.MaxLength = 3
+       If (m = 2) Then regdata1.MaxLength = 5
+       regdata1.Text = regdata[1]
+    Case "ASCII"
+       regdata1.MaxLength = 1 * m
+       regdata1.Text = Chr$(regdata[1] And 255)
+       If m = 2 And If regdata[1] > 255
+        regdata1.Text = Chr$(regdata[1] / 256) & regdata1.Text
+       Endif
+  End Select
+  regdata1.SetFocus()
+
+End
+
+Public Sub regdata1_KeyRelease()
+
+    Dim m As Long = 255
+    If (reg161.Value)
+      m = 65535
+    Endif
+  If (valcheck(regdata1.Text, choicerd1.Text) = 1)
+    regdata1.text = ""
+    Return
+  Endif 
+  Select Case choicerd1.Text
+    Case "HEX" 
+       regdata[1] = Abs(Val("&H" & regdata1.Text))
+    Case "Decimal"
+       regdata[1] = Val(regdata1.Text) And m
+    Case "ASCII"
+       regdata[1] = Asc(regdata1.Text)
+       If (reg161.Value) And If (Len(regdata1.Text) > 1)
+        regdata[1] = Asc(Right$(regdata1.Text)) + (regdata[1] * 256)
+       Endif
+       
+  End Select  
+
+End
+
+Public Sub choicere1_Click()
+
+    Select Case choicere1.Text
+    Case "HEX" 
+       regnr1.MaxLength = 2 
+       regnr1.Text = Hex$(regnr[1], 2)
+    Case "Decimal"
+       regnr1.MaxLength = 3 
+       regnr1.Text = regnr[1]
+  End Select
+  regdata1.SetFocus()
+
+End
+
+Public Sub regnr1_KeyRelease()
+
+  Select Case choicere1.Text
+    Case "HEX" 
+       regnr[1] = Val("&H" & regnr1.Text)
+    Case "Decimal"
+       regnr[1] = Val(regnr1.Text) And 255
+  End Select  
+  
+
+End
+
+Public Sub reg81_Click()
+
+    regdata[1] = regdata[1] And 255
+    choicerd1_Click()
+    
+End
+
+Public Sub reg161_Click()
+
+    choicerd1_Click()
+
+End
+
+Public Sub rdd1_Click()
+
+  Dim inp As Integer
+  inp = wiringPiI2CRead(fd[1])
+   If inp = -1 Then Return
+  data[1] = inp
+  choiced1_Click()
+  
+End
+
+Public Sub wdd1_Click()
+
+  wiringPiI2CWrite(fd[1], data[1])
+
+End
+
+
+
+Public Sub rrr1_Click()
+
+  Dim inp As Integer
+  
+  If (reg161.Value)
+    inp = wiringPiI2CReadReg16(fd[1], regnr[1])
+  Else 
+    inp = wiringPiI2CReadReg8(fd[1], regnr[1])
+  Endif
+   If inp = -1 Then Return
+  regdata[1] = inp
+  choicerd1_Click()
+ 
+End
+
+Public Sub rrw1_Click()
+
+  If (reg161.Value)
+    wiringPiI2CWriteReg16(fd[1], regnr[1], regdata[1])
+  Else 
+    wiringPiI2CWriteReg8(fd[1], regnr[1], regdata[1])
+  Endif 
+
+End
+
+Public Sub open2_Click()
+
+  fd[2] = wiringPiI2CSetup(Val("&H" & devnumber2.Text))
+  If (fd[2] = -1)
+    Return
+  Else
+    rdd2.Enabled = True
+    wdd2.Enabled = True
+    rrr2.Enabled = True
+    rrw2.Enabled = True
+    open2.Enabled = False
+  Endif
+
+End
+
+Public Sub choiced2_Click()
+  Select Case choiced2.Text
+    Case "HEX" 
+       data2.MaxLength = 2 
+       data2.Text = Hex$(data[2], 2)
+    Case "Decimal"
+       data2.MaxLength = 3 
+       data2.Text = data[2]
+    Case "ASCII"
+       data2.MaxLength = 2 
+       data2.Text = Chr$(data[2])
+  End Select
+  data2.SetFocus()
+
+End
+
+Public Sub data2_KeyRelease()
+
+  If (valcheck(data2.Text, choiced2.Text) = 1)
+    data2.text = ""
+    Return
+  Endif
+  Select Case choiced2.Text
+    Case "HEX" 
+       data[2] = Val("&H" & data2.Text)
+    Case "Decimal"
+       data[2] = Val(data2.Text) And 255
+    Case "ASCII"
+       data[2] = Asc(data2.Text)
+  End Select  
+
+End
+
+Public Sub choicerd2_Click()
+
+    Dim m As Integer = 1
+    If (reg162.Value)
+      m = 2
+    Endif
+  Select Case choicerd2.Text
+    Case "HEX" 
+       regdata2.MaxLength = 2 * m
+       regdata2.Text = Hex$(regdata[2], 2 * m)
+    Case "Decimal"
+       regdata2.MaxLength = 3
+       If (m = 2) Then regdata2.MaxLength = 5
+       regdata2.Text = regdata[2]
+    Case "ASCII"
+       regdata2.MaxLength = 1 * m
+       regdata2.Text = Chr$(regdata[2] And 255)
+       If m = 2 And If regdata[2] > 255
+        regdata2.Text = Chr$(regdata[2] / 256) & regdata2.Text
+       Endif
+  End Select
+  regdata2.SetFocus()
+
+End
+
+Public Sub regdata2_KeyRelease()
+
+    Dim m As Long = 255
+    If (reg162.Value)
+      m = 65535
+    Endif
+  If (valcheck(regdata2.Text, choicerd2.Text) = 1)
+    regdata2.text = ""
+    Return
+  Endif 
+  Select Case choicerd2.Text
+    Case "HEX" 
+       regdata[2] = Abs(Val("&H" & regdata2.Text))
+    Case "Decimal"
+       regdata[2] = Val(regdata2.Text) And m
+    Case "ASCII"
+       regdata[2] = Asc(regdata2.Text)
+       If (reg162.Value) And If (Len(regdata2.Text) > 1)
+        regdata[2] = Asc(Right$(regdata2.Text)) + (regdata[2] * 256)
+       Endif
+       
+  End Select  
+
+End
+
+Public Sub choicere2_Click()
+
+    Select Case choicere2.Text
+    Case "HEX" 
+       regnr2.MaxLength = 2 
+       regnr2.Text = Hex$(regnr[2], 2)
+    Case "Decimal"
+       regnr2.MaxLength = 3 
+       regnr2.Text = regnr[2]
+  End Select
+  regdata2.SetFocus()
+
+End
+
+Public Sub regnr2_KeyRelease()
+
+  Select Case choicere2.Text
+    Case "HEX" 
+       regnr[2] = Val("&H" & regnr2.Text)
+    Case "Decimal"
+       regnr[2] = Val(regnr2.Text) And 255
+  End Select  
+  
+
+End
+
+Public Sub reg82_Click()
+
+    regdata[2] = regdata[2] And 255
+    choicerd2_Click()
+    
+End
+
+Public Sub reg162_Click()
+
+    choicerd2_Click()
+
+End
+
+Public Sub rdd2_Click()
+
+  Dim inp As Integer
+  inp = wiringPiI2CRead(fd[2])
+   If inp = -1 Then Return
+  data[2] = inp
+  choiced2_Click()
+  
+End
+
+Public Sub wdd2_Click()
+
+  wiringPiI2CWrite(fd[2], data[2])
+
+End
+
+
+
+Public Sub rrr2_Click()
+
+  Dim inp As Integer
+  
+  If (reg162.Value)
+    inp = wiringPiI2CReadReg16(fd[2], regnr[2])
+  Else 
+    inp = wiringPiI2CReadReg8(fd[2], regnr[2])
+  Endif
+   If inp = -1 Then Return
+  regdata[2] = inp
+  choicerd2_Click()
+ 
+End
+
+Public Sub rrw2_Click()
+
+  If (reg162.Value)
+    wiringPiI2CWriteReg16(fd[2], regnr[2], regdata[2])
+  Else 
+    wiringPiI2CWriteReg8(fd[2], regnr[2], regdata[2])
+  Endif 
+
+End
+
+Public Sub open3_Click()
+
+  fd[3] = wiringPiI2CSetup(Val("&H" & devnumber3.Text))
+  If (fd[3] = -1)
+    Return
+  Else
+    rdd3.Enabled = True
+    wdd3.Enabled = True
+    rrr3.Enabled = True
+    rrw3.Enabled = True
+    open3.Enabled = False
+  Endif
+
+End
+
+Public Sub choiced3_Click()
+  Select Case choiced3.Text
+    Case "HEX" 
+       data3.MaxLength = 2 
+       data3.Text = Hex$(data[3], 2)
+    Case "Decimal"
+       data3.MaxLength = 3 
+       data3.Text = data[3]
+    Case "ASCII"
+       data3.MaxLength = 2 
+       data3.Text = Chr$(data[3])
+  End Select
+  data3.SetFocus()
+
+End
+
+Public Sub data3_KeyRelease()
+
+  If (valcheck(data3.Text, choiced3.Text) = 1)
+    data3.text = ""
+    Return
+  Endif
+  Select Case choiced3.Text
+    Case "HEX" 
+       data[3] = Val("&H" & data3.Text)
+    Case "Decimal"
+       data[3] = Val(data3.Text) And 255
+    Case "ASCII"
+       data[3] = Asc(data3.Text)
+  End Select  
+
+End
+
+Public Sub choicerd3_Click()
+
+    Dim m As Integer = 1
+    If (reg163.Value)
+      m = 2
+    Endif
+  Select Case choicerd3.Text
+    Case "HEX" 
+       regdata3.MaxLength = 2 * m
+       regdata3.Text = Hex$(regdata[3], 2 * m)
+    Case "Decimal"
+       regdata3.MaxLength = 3
+       If (m = 3) Then regdata3.MaxLength = 5
+       regdata3.Text = regdata[3]
+    Case "ASCII"
+       regdata3.MaxLength = 1 * m
+       regdata3.Text = Chr$(regdata[3] And 255)
+       If m = 2 And If regdata[3] > 255
+        regdata3.Text = Chr$(regdata[3] / 256) & regdata3.Text
+       Endif
+  End Select
+  regdata3.SetFocus()
+
+End
+
+Public Sub regdata3_KeyRelease()
+
+    Dim m As Long = 255
+    If (reg163.Value)
+      m = 65535
+    Endif
+  If (valcheck(regdata3.Text, choicerd3.Text) = 1)
+    regdata3.text = ""
+    Return
+  Endif 
+  Select Case choicerd3.Text
+    Case "HEX" 
+       regdata[3] = Abs(Val("&H" & regdata3.Text))
+    Case "Decimal"
+       regdata[3] = Val(regdata3.Text) And m
+    Case "ASCII"
+       regdata[3] = Asc(regdata3.Text)
+       If (reg163.Value) And If (Len(regdata3.Text) > 1)
+        regdata[3] = Asc(Right$(regdata3.Text)) + (regdata[3] * 256)
+       Endif
+       
+  End Select  
+
+End
+
+Public Sub choicere3_Click()
+
+    Select Case choicere3.Text
+    Case "HEX" 
+       regnr3.MaxLength = 2 
+       regnr3.Text = Hex$(regnr[3], 2)
+    Case "Decimal"
+       regnr3.MaxLength = 3 
+       regnr3.Text = regnr[3]
+  End Select
+  regdata3.SetFocus()
+
+End
+
+Public Sub regnr3_KeyRelease()
+
+  Select Case choicere3.Text
+    Case "HEX" 
+       regnr[3] = Val("&H" & regnr3.Text)
+    Case "Decimal"
+       regnr[3] = Val(regnr3.Text) And 255
+  End Select  
+  
+
+End
+
+Public Sub reg83_Click()
+
+    regdata[3] = regdata[3] And 255
+    choicerd3_Click()
+    
+End
+
+Public Sub reg163_Click()
+
+    choicerd3_Click()
+
+End
+
+Public Sub rdd3_Click()
+
+  Dim inp As Integer
+  inp = wiringPiI2CRead(fd[3])
+   If inp = -1 Then Return
+  data[3] = inp
+  choiced3_Click()
+  
+End
+
+Public Sub wdd3_Click()
+
+  wiringPiI2CWrite(fd[3], data[3])
+
+End
+
+
+
+Public Sub rrr3_Click()
+
+  Dim inp As Integer
+  
+  If (reg163.Value)
+    inp = wiringPiI2CReadReg16(fd[3], regnr[3])
+  Else 
+    inp = wiringPiI2CReadReg8(fd[3], regnr[3])
+  Endif
+   If inp = -1 Then Return
+  regdata[3] = inp
+  choicerd3_Click()
+ 
+End
+
+Public Sub rrw3_Click()
+
+  If (reg163.Value)
+    wiringPiI2CWriteReg16(fd[3], regnr[3], regdata[3])
+  Else 
+    wiringPiI2CWriteReg8(fd[3], regnr[3], regdata[3])
+  Endif 
+
+End
+
+

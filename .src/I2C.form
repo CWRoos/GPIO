@@ -1,0 +1,427 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(17.8571,15.1429,127,64)
+  Text = ("I2C Controll")
+  Icon = Picture["gpio.png"]
+  { Button1 Button
+    MoveScaled(109,58,16,4)
+    Text = ("Close")
+  }
+  { Result TextArea
+    MoveScaled(4,38,63,24)
+    Font = Font["Monospace"]
+    ReadOnly = True
+  }
+  { open0 Button
+    MoveScaled(1,5,10,3)
+    Text = ("Open")
+  }
+  { Label1 Label
+    MoveScaled(12,5,8,3)
+    Text = ("Device")
+  }
+  { devnumber0 TextBox
+    MoveScaled(19,5,5,3)
+    Text = ("20")
+  }
+  { Label2 Label
+    MoveScaled(5,35,24,3)
+    Text = ("Devices Connected ;")
+  }
+  { rdd0 Button
+    MoveScaled(29,3,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { wdd0 Button
+    MoveScaled(29,6,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label3 Label
+    MoveScaled(41,5,7,3)
+    Text = ("Data")
+  }
+  { Label4 Label
+    MoveScaled(24,5,2,3)
+    Text = ("H")
+  }
+  { choiced0 ComboBox
+    MoveScaled(53,5,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { data0 TextBox
+    MoveScaled(46,5,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { rrr0 Button
+    MoveScaled(70,3,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { Label5 Label
+    MoveScaled(82,6,7,3)
+    Text = ("Data")
+  }
+  { choicerd0 ComboBox
+    MoveScaled(97,6,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { regdata0 TextBox
+    MoveScaled(90,6,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { regnr0 TextBox
+    MoveScaled(90,3,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { choicere0 ComboBox
+    MoveScaled(97,3,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal")]
+    Text = ("HEX")
+  }
+  { Label6 Label
+    MoveScaled(82,3,8,3)
+    Text = ("Register")
+  }
+  { Label7 Label
+    MoveScaled(122,6,4,3)
+    Text = ("Bits")
+  }
+  { open1 Button
+    MoveScaled(1,13,10,3)
+    Text = ("Open")
+  }
+  { Label8 Label
+    MoveScaled(12,13,8,3)
+    Text = ("Device")
+  }
+  { devnumber1 TextBox
+    MoveScaled(19,13,5,3)
+    Text = ("25")
+  }
+  { rdd1 Button
+    MoveScaled(29,11,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { wdd1 Button
+    MoveScaled(29,14,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label9 Label
+    MoveScaled(41,13,7,3)
+    Text = ("Data")
+  }
+  { Label10 Label
+    MoveScaled(24,13,2,3)
+    Text = ("H")
+  }
+  { choiced1 ComboBox
+    MoveScaled(53,13,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { data1 TextBox
+    MoveScaled(46,13,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { rrr1 Button
+    MoveScaled(70,11,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { rrw1 Button
+    MoveScaled(70,14,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label11 Label
+    MoveScaled(82,14,7,3)
+    Text = ("Data")
+  }
+  { choicerd1 ComboBox
+    MoveScaled(97,14,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { regdata1 TextBox
+    MoveScaled(90,14,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { regnr1 TextBox
+    MoveScaled(90,11,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { choicere1 ComboBox
+    MoveScaled(97,11,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal")]
+    Text = ("HEX")
+  }
+  { Label12 Label
+    MoveScaled(82,11,8,3)
+    Text = ("Register")
+  }
+  { Label13 Label
+    MoveScaled(122,14,4,3)
+    Text = ("Bits")
+  }
+  { open2 Button
+    MoveScaled(1,21,10,3)
+    Text = ("Open")
+  }
+  { Label14 Label
+    MoveScaled(12,21,8,3)
+    Text = ("Device")
+  }
+  { devnumber2 TextBox
+    MoveScaled(19,21,5,3)
+    Text = ("30")
+  }
+  { rdd2 Button
+    MoveScaled(29,19,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { wdd2 Button
+    MoveScaled(29,22,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label15 Label
+    MoveScaled(41,21,7,3)
+    Text = ("Data")
+  }
+  { Label16 Label
+    MoveScaled(24,21,2,3)
+    Text = ("H")
+  }
+  { choiced2 ComboBox
+    MoveScaled(53,21,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { data2 TextBox
+    MoveScaled(46,21,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { rrr2 Button
+    MoveScaled(70,19,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { rrw2 Button
+    MoveScaled(70,22,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label17 Label
+    MoveScaled(82,22,7,3)
+    Text = ("Data")
+  }
+  { choicerd2 ComboBox
+    MoveScaled(97,22,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { regdata2 TextBox
+    MoveScaled(90,22,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { regnr2 TextBox
+    MoveScaled(90,19,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { choicere2 ComboBox
+    MoveScaled(97,19,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal")]
+    Text = ("HEX")
+  }
+  { Label18 Label
+    MoveScaled(82,19,8,3)
+    Text = ("Register")
+  }
+  { Label19 Label
+    MoveScaled(122,22,4,3)
+    Text = ("Bits")
+  }
+  { open3 Button
+    MoveScaled(1,29,10,3)
+    Text = ("Open")
+  }
+  { Label20 Label
+    MoveScaled(12,29,8,3)
+    Text = ("Device")
+  }
+  { devnumber3 TextBox
+    MoveScaled(19,29,5,3)
+    Text = ("35")
+  }
+  { rdd3 Button
+    MoveScaled(29,27,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { wdd3 Button
+    MoveScaled(29,30,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label21 Label
+    MoveScaled(41,29,7,3)
+    Text = ("Data")
+  }
+  { Label22 Label
+    MoveScaled(24,29,2,3)
+    Text = ("H")
+  }
+  { choiced3 ComboBox
+    MoveScaled(53,29,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { data3 TextBox
+    MoveScaled(46,29,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { rrr3 Button
+    MoveScaled(70,27,11,3)
+    Enabled = False
+    Text = ("Read")
+  }
+  { rrw3 Button
+    MoveScaled(70,30,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Label23 Label
+    MoveScaled(82,30,7,3)
+    Text = ("Data")
+  }
+  { choicerd3 ComboBox
+    MoveScaled(97,30,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { regdata3 TextBox
+    MoveScaled(90,30,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { regnr3 TextBox
+    MoveScaled(90,27,7,3)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { choicere3 ComboBox
+    MoveScaled(97,27,13,3)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal")]
+    Text = ("HEX")
+  }
+  { Label24 Label
+    MoveScaled(82,27,8,3)
+    Text = ("Register")
+  }
+  { Label25 Label
+    MoveScaled(122,30,4,3)
+    Text = ("Bits")
+  }
+  { Panel2 Panel
+    MoveScaled(111,14,12,4)
+    { reg161 RadioButton
+      MoveScaled(5,0,6,3)
+      Text = ("16")
+    }
+    { reg81 RadioButton
+      MoveScaled(0,0,5,3)
+      Text = ("8")
+      Value = True
+    }
+  }
+  { Panel3 Panel
+    MoveScaled(111,22,12,4)
+    { reg162 RadioButton
+      MoveScaled(5,0,6,3)
+      Text = ("16")
+    }
+    { reg82 RadioButton
+      MoveScaled(0,0,5,3)
+      Text = ("8")
+      Value = True
+    }
+  }
+  { Panel4 Panel
+    MoveScaled(111,30,12,4)
+    { reg163 RadioButton
+      MoveScaled(5,0,6,3)
+      Text = ("16")
+    }
+    { reg83 RadioButton
+      MoveScaled(0,0,5,3)
+      Text = ("8")
+      Value = True
+    }
+  }
+  { rrw0 Button
+    MoveScaled(70,6,11,3)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Panel1 Panel
+    MoveScaled(111,6,12,4)
+    { reg160 RadioButton
+      MoveScaled(5,0,6,3)
+      Text = ("16")
+    }
+    { reg80 RadioButton
+      MoveScaled(0,0,5,3)
+      Text = ("8")
+      Value = True
+    }
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(74,36,29,28)
+    Picture = Picture["i2c.png"]
+  }
+  { Separator1 Separator
+    MoveScaled(-1,32,129,4)
+  }
+  { Separator2 Separator
+    MoveScaled(-1,24,129,4)
+  }
+  { Separator3 Separator
+    MoveScaled(-1,16,129,4)
+  }
+  { Separator4 Separator
+    MoveScaled(-1,8,129,4)
+  }
+  { Separator5 Separator
+    MoveScaled(-1,0,129,4)
+  }
+}

@@ -1,0 +1,1145 @@
+' Gambas class file
+
+Public img_ledoff As Picture = Picture.Load("ledoff.png")
+Public img_ledon As Picture = Picture.Load("ledon.png")
+
+' Gambas class file
+
+'external function definitions for wiringPi Library
+'
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern wiringPiSetup() As Integer
+Public Extern digitalRead(pin As Integer) As Integer
+Public Extern digitalWrite(pin As Integer, value As Integer)
+Public Extern pinMode(pin As Integer, pud As Integer)
+Public Extern pullUpDnControl(pin As Integer, mode As Integer)
+Public Extern pwmWrite(pin As Integer, value As Integer)
+Public Extern softPwmCreate(pin As Integer, initialValue As Integer, pwmRange As Integer)
+Public Extern softPwmWrite(pin As Integer, value As Integer)
+Public Extern softToneCreate(pin As Integer)
+Public Extern softToneWrite(pin As Integer, freq As Integer)
+Public Extern pwmSetMode(mode As Integer)
+Public Extern pwmSetRange(range As Integer)
+Public Extern pwmSetClock(divisor As Integer)
+Public Extern gpioClockSet(pin As Integer, freq As Integer)
+
+
+'useful constants for wiringPi Library
+'
+Public Const PIN_OUTPUT As Integer = 1
+Public Const PIN_INPUT As Integer = 0
+Public Const PIN_PWM As Integer = 2
+Public Const PUD_OFF As Integer = 0
+Public Const PUD_DOWN As Integer = 1
+Public Const PUD_UP As Integer = 2
+Public Const PWM_MODE_MS As Integer = 0
+Public Const PWM_MODE_BAL As Integer = 1
+Public Const GPIO_CLOCK As Integer = 3
+
+
+Public port8[8] As Integer
+Public graf[8, 66] As Integer
+
+Public sp As Integer
+Public st As Integer 
+
+Public Sub Form_Open()
+
+Dim x, y As Integer 
+
+If (wiringPiSetup() = -1)
+ Message("Failed to setup wiringPi. This program must be run as root")
+Quit
+Endif
+
+For x = 0 To 7 
+  port8[x] = PIN_INPUT
+  pinMode(x, PIN_INPUT)
+  pullUpDnControl(x, PUD_OFF)
+   For y = 0 To 65
+     graf[x, y] = 53
+   Next
+Next
+
+End
+
+
+Public Sub IN0_Click()
+
+  pinMode(0, PIN_INPUT)
+  port8[0] = PIN_INPUT
+  Draw0.Visible = True
+  poff0.Visible = True
+  pup0.Visible = True
+  pdwn0.Visible = True
+  zero0.Visible = False
+  plus0.Visible = False
+  spwmon0.Visible = False
+  spwmslid0.Visible = False
+  Labelpwm0.Visible = False
+  pwmval0.Visible = False
+  softone0.Visible = False
+  stonesl0.Visible = False
+  stoneval0.Visible = False
+  Labeltone0.Visible = False
+  
+  End
+
+Public Sub OUT0_Click()
+
+  pinMode(0, PIN_OUTPUT)
+  port8[0] = PIN_OUTPUT
+  Draw0.Visible = False
+  poff0.Visible = False
+  pup0.Visible = False
+  pdwn0.Visible = False
+  zero0.Visible = True
+  plus0.Visible = True
+  If (zero0.Value)
+    LED0.picture = img_ledoff
+    digitalWrite(0, 0)
+  Else
+    LED0.picture = img_ledon
+    digitalWrite(0, 1)
+  Endif 
+  spwmon0.Visible = True
+  spwmslid0.Visible = True
+  Labelpwm0.Visible = True
+  pwmval0.Visible = True
+  softone0.Visible = True
+  stonesl0.Visible = True
+  stoneval0.Visible = True
+  Labeltone0.Visible = True
+      
+End
+
+Public Sub anal(d As DrawingArea, y As Integer)
+ Dim x As Integer
+ If (port8[y] = PIN_INPUT)
+  d.Clear
+  Draw.Begin(d)
+  Draw.LineWidth = 2
+  Draw.ForeGround = Color.White
+  For x = 0 To 64
+    Draw.Line(x * 10, graf[y, x], x * 10 + 10, graf[y, x])
+    If (graf[y, x] <> graf[y, x + 1])
+     Draw.Line(x * 10 + 10, 53, x * 10 + 10, 3)
+    Endif
+  Next
+  Draw.Line(650, graf[y, 65], 660, graf[y, 65])
+  Draw.End
+ Endif
+ 
+ End
+ 
+
+Public Sub Timer1_Timer()
+Dim x, y As Integer
+
+  
+  For y = 0 To 7
+    If (port8[y] = PIN_INPUT)
+      For x = 0 To 64
+        graf[y, x] = graf[y, x + 1]
+      Next
+      If (digitalRead(y) = 1)
+        graf[y, 65] = 3
+      Else
+        graf[y, 65] = 53
+      Endif
+    Endif
+  Next 
+ 
+  anal(Draw0, 0)
+  anal(Draw1, 1)
+  anal(Draw2, 2)
+  anal(Draw3, 3)
+  anal(Draw4, 4)
+  anal(Draw5, 5)
+  anal(Draw6, 6)
+  anal(Draw7, 7)
+
+  If (digitalRead(0) = 1)
+    LED0.Picture = img_ledon
+  Else
+    LED0.Picture = img_ledoff
+  Endif
+  If (digitalRead(1) = 1)
+    LED1.Picture = img_ledon
+  Else
+    LED1.Picture = img_ledoff
+  Endif
+  If (digitalRead(2) = 1)
+    LED2.Picture = img_ledon
+  Else
+    LED2.Picture = img_ledoff
+  Endif
+  If (digitalRead(3) = 1)
+    LED3.Picture = img_ledon
+  Else
+    LED3.Picture = img_ledoff
+  Endif
+  If (digitalRead(4) = 1)
+    LED4.Picture = img_ledon
+  Else
+    LED4.Picture = img_ledoff
+  Endif
+  If (digitalRead(5) = 1)
+    LED5.Picture = img_ledon
+  Else
+    LED5.Picture = img_ledoff
+  Endif
+  If (digitalRead(6) = 1)
+    LED6.Picture = img_ledon
+  Else
+    LED6.Picture = img_ledoff
+  Endif
+  If (digitalRead(7) = 1)
+    LED7.Picture = img_ledon
+  Else
+    LED7.Picture = img_ledoff
+  Endif
+
+End
+
+
+Public Sub poff0_Click()
+
+  pullUpDnControl(0, PUD_OFF)
+
+End
+
+Public Sub pup0_Click()
+
+  pullUpDnControl(0, PUD_UP)
+
+End
+
+Public Sub pdwn0_Click()
+
+  pullUpDnControl(0, PUD_DOWN)
+
+End
+
+Public Sub zero0_Click()
+
+  digitalWrite(0, 0)
+
+End
+
+Public Sub plus0_Click()
+
+  digitalWrite(0, 1)
+
+End
+
+Public Sub spwmon0_Click()
+
+  softPwmCreate(0, spwmslid0.Value, 100)
+  spwmon0.Enabled = False
+  plus0.Enabled = False
+  zero0.Enabled = False
+  IN0.enabled = False
+  softone0.Enabled = False
+  stonesl0.Enabled = False
+End
+
+Public Sub spwmslid0_Change()
+
+  softPwmWrite(0, spwmslid0.Value)
+  pwmval0.Text = Str$(spwmslid0.Value)
+  
+End
+
+Public Sub softone0_Click()
+
+  softToneCreate(0)
+  spwmon0.Enabled = False
+  plus0.Enabled = False
+  zero0.Enabled = False
+  IN0.enabled = False  
+  softone0.Enabled = False
+  spwmslid0.Enabled = False
+  softToneWrite(0, stonesl0.Value)
+  
+End
+
+Public Sub stonesl0_Change()
+
+  softToneWrite(0, stonesl0.Value)
+  stoneval0.Text = Str$(stonesl0.Value)  
+
+End
+
+Public Sub IN1_Click()
+
+  pinMode(1, PIN_INPUT)
+  port8[1] = PIN_INPUT
+  Draw1.Visible = True
+  poff1.Visible = True
+  pup1.Visible = True
+  pdwn1.Visible = True
+  zero1.Visible = False
+  plus1.Visible = False
+  spwmon1.Visible = False
+  spwmslid1.Visible = False
+  Labelpwm1.Visible = False
+  pwmval1.Visible = False
+  RadioButton1.Visible = False
+  RadioButton2.Visible = False
+  range.Visible = False
+  rangspin.Visible = False
+  divisor.Visible = False
+  divspin.Visible = False
+  End
+
+Public Sub OUT1_Click()
+
+  pinMode(1, PIN_OUTPUT)
+  port8[1] = PIN_OUTPUT
+  Draw1.Visible = False
+  poff1.Visible = False
+  pup1.Visible = False
+  pdwn1.Visible = False
+  zero1.Visible = True
+  plus1.Visible = True
+  If (zero1.Value)
+    LED1.picture = img_ledoff
+    digitalWrite(1, 0)
+  Else
+    LED1.picture = img_ledon
+    digitalWrite(1, 1)
+  Endif 
+  spwmon1.Visible = True
+  spwmslid1.Visible = True
+  Labelpwm1.Visible = True
+  pwmval1.Visible = True
+  RadioButton1.Visible = True
+  RadioButton2.Visible = True
+  range.Visible = True
+  rangspin.Visible = True
+  divisor.Visible = True
+  divspin.Visible = True    
+End
+
+
+
+Public Sub poff1_Click()
+
+  pullUpDnControl(1, PUD_OFF)
+
+End
+
+Public Sub pup1_Click()
+
+  pullUpDnControl(1, PUD_UP)
+
+End
+
+Public Sub pdwn1_Click()
+
+  pullUpDnControl(1, PUD_DOWN)
+
+End
+
+Public Sub zero1_Click()
+
+  digitalWrite(1, 0)
+
+End
+
+Public Sub plus1_Click()
+
+  digitalWrite(1, 1)
+
+End
+
+Public Sub spwmon1_Click()
+If (spwmon1.Value = True)
+  pinMode(1, PIN_PWM)
+  pwmSetRange(rangspin.Value)  
+  pwmWrite(1, spwmslid1.Value)
+  pwmSetClock(divspin.Value)
+  pwmSetMode(PWM_MODE_BAL)
+Else
+  pinMode(1, PIN_OUTPUT)
+Endif
+
+End
+
+Public Sub spwmslid1_Change()
+
+  pwmWrite(1, spwmslid1.Value)
+  pwmval1.Text = Str$(spwmslid1.Value)
+  
+End
+
+
+Public Sub IN2_Click()
+
+  pinMode(2, PIN_INPUT)
+  port8[2] = PIN_INPUT
+  Draw2.Visible = True
+  poff2.Visible = True
+  pup2.Visible = True
+  pdwn2.Visible = True
+  zero2.Visible = False
+  plus2.Visible = False
+  spwmon2.Visible = False
+  spwmslid2.Visible = False
+  Labelpwm2.Visible = False
+  pwmval2.Visible = False
+  softone2.Visible = False
+  stonesl2.Visible = False
+  stoneval2.Visible = False
+  Labeltone2.Visible = False
+  
+  End
+
+Public Sub OUT2_Click()
+
+  pinMode(2, PIN_OUTPUT)
+  port8[2] = PIN_OUTPUT
+  Draw2.Visible = False
+  poff2.Visible = False
+  pup2.Visible = False
+  pdwn2.Visible = False
+  zero2.Visible = True
+  plus2.Visible = True
+  If (zero2.Value)
+    LED2.picture = img_ledoff
+    digitalWrite(2, 0)
+  Else
+    LED2.picture = img_ledon
+    digitalWrite(2, 1)
+  Endif 
+  spwmon2.Visible = True
+  spwmslid2.Visible = True
+  Labelpwm2.Visible = True
+  pwmval2.Visible = True
+  softone2.Visible = True
+  stonesl2.Visible = True
+  stoneval2.Visible = True
+  Labeltone2.Visible = True
+      
+End
+
+Public Sub poff2_Click()
+
+  pullUpDnControl(2, PUD_OFF)
+
+End
+
+Public Sub pup2_Click()
+
+  pullUpDnControl(2, PUD_UP)
+
+End
+
+Public Sub pdwn2_Click()
+
+  pullUpDnControl(2, PUD_DOWN)
+
+End
+
+Public Sub zero2_Click()
+
+  digitalWrite(2, 0)
+
+End
+
+Public Sub plus2_Click()
+
+  digitalWrite(2, 1)
+
+End
+
+Public Sub spwmon2_Click()
+
+  softPwmCreate(2, spwmslid2.Value, 100)
+  spwmon2.Enabled = False
+  plus2.Enabled = False
+  zero2.Enabled = False
+  IN2.enabled = False
+  softone2.Enabled = False
+  stonesl2.Enabled = False
+End
+
+Public Sub spwmslid2_Change()
+
+  softPwmWrite(2, spwmslid2.Value)
+  pwmval2.Text = Str$(spwmslid2.Value)
+  
+End
+
+Public Sub softone2_Click()
+
+  softToneCreate(2)
+  spwmon2.Enabled = False
+  plus2.Enabled = False
+  zero2.Enabled = False
+  IN2.enabled = False  
+  softone2.Enabled = False
+  spwmslid2.Enabled = False
+  softToneWrite(2, stonesl2.Value)
+  
+End
+
+Public Sub stonesl2_Change()
+
+  softToneWrite(2, stonesl2.Value)
+  stoneval2.Text = Str$(stonesl2.Value)  
+
+End
+
+Public Sub IN3_Click()
+
+  pinMode(3, PIN_INPUT)
+  port8[3] = PIN_INPUT
+  Draw3.Visible = True
+  poff3.Visible = True
+  pup3.Visible = True
+  pdwn3.Visible = True
+  zero3.Visible = False
+  plus3.Visible = False
+  spwmon3.Visible = False
+  spwmslid3.Visible = False
+  Labelpwm3.Visible = False
+  pwmval3.Visible = False
+  softone3.Visible = False
+  stonesl3.Visible = False
+  stoneval3.Visible = False
+  Labeltone3.Visible = False
+  
+  End
+
+Public Sub OUT3_Click()
+
+  pinMode(3, PIN_OUTPUT)
+  port8[3] = PIN_OUTPUT
+  Draw3.Visible = False
+  poff3.Visible = False
+  pup3.Visible = False
+  pdwn3.Visible = False
+  zero3.Visible = True
+  plus3.Visible = True
+  If (zero3.Value)
+    LED3.picture = img_ledoff
+    digitalWrite(3, 0)
+  Else
+    LED3.picture = img_ledon
+    digitalWrite(3, 1)
+  Endif 
+  spwmon3.Visible = True
+  spwmslid3.Visible = True
+  Labelpwm3.Visible = True
+  pwmval3.Visible = True
+  softone3.Visible = True
+  stonesl3.Visible = True
+  stoneval3.Visible = True
+  Labeltone3.Visible = True
+      
+End
+
+Public Sub poff3_Click()
+
+  pullUpDnControl(3, PUD_OFF)
+
+End
+
+Public Sub pup3_Click()
+
+  pullUpDnControl(3, PUD_UP)
+
+End
+
+Public Sub pdwn3_Click()
+
+  pullUpDnControl(3, PUD_DOWN)
+
+End
+
+Public Sub zero3_Click()
+
+  digitalWrite(3, 0)
+
+End
+
+Public Sub plus3_Click()
+
+  digitalWrite(3, 1)
+
+End
+
+Public Sub spwmon3_Click()
+
+  softPwmCreate(3, spwmslid3.Value, 100)
+  spwmon3.Enabled = False
+  plus3.Enabled = False
+  zero3.Enabled = False
+  IN3.enabled = False
+  softone3.Enabled = False
+  stonesl3.Enabled = False
+End
+
+Public Sub spwmslid3_Change()
+
+  softPwmWrite(3, spwmslid3.Value)
+  pwmval3.Text = Str$(spwmslid3.Value)
+  
+End
+
+Public Sub softone3_Click()
+
+  softToneCreate(3)
+  spwmon3.Enabled = False
+  plus3.Enabled = False
+  zero3.Enabled = False
+  IN3.enabled = False  
+  softone3.Enabled = False
+  spwmslid3.Enabled = False
+  softToneWrite(3, stonesl3.Value)
+  
+End
+
+Public Sub stonesl3_Change()
+
+  softToneWrite(3, stonesl3.Value)
+  stoneval3.Text = Str$(stonesl3.Value)  
+
+End
+
+Public Sub IN4_Click()
+
+  pinMode(4, PIN_INPUT)
+  port8[4] = PIN_INPUT
+  Draw4.Visible = True
+  poff4.Visible = True
+  pup4.Visible = True
+  pdwn4.Visible = True
+  zero4.Visible = False
+  plus4.Visible = False
+  spwmon4.Visible = False
+  spwmslid4.Visible = False
+  Labelpwm4.Visible = False
+  pwmval4.Visible = False
+  softone4.Visible = False
+  stonesl4.Visible = False
+  stoneval4.Visible = False
+  Labeltone4.Visible = False
+  
+  End
+
+Public Sub OUT4_Click()
+
+  pinMode(4, PIN_OUTPUT)
+  port8[4] = PIN_OUTPUT
+  Draw4.Visible = False
+  poff4.Visible = False
+  pup4.Visible = False
+  pdwn4.Visible = False
+  zero4.Visible = True
+  plus4.Visible = True
+  If (zero4.Value)
+    LED4.picture = img_ledoff
+    digitalWrite(4, 0)
+  Else
+    LED4.picture = img_ledon
+    digitalWrite(4, 1)
+  Endif 
+  spwmon4.Visible = True
+  spwmslid4.Visible = True
+  Labelpwm4.Visible = True
+  pwmval4.Visible = True
+  softone4.Visible = True
+  stonesl4.Visible = True
+  stoneval4.Visible = True
+  Labeltone4.Visible = True
+      
+End
+
+Public Sub poff4_Click()
+
+  pullUpDnControl(4, PUD_OFF)
+
+End
+
+Public Sub pup4_Click()
+
+  pullUpDnControl(4, PUD_UP)
+
+End
+
+Public Sub pdwn4_Click()
+
+  pullUpDnControl(4, PUD_DOWN)
+
+End
+
+Public Sub zero4_Click()
+
+  digitalWrite(4, 0)
+
+End
+
+Public Sub plus4_Click()
+
+  digitalWrite(4, 1)
+
+End
+
+Public Sub spwmon4_Click()
+
+  softPwmCreate(4, spwmslid4.Value, 100)
+  spwmon4.Enabled = False
+  plus4.Enabled = False
+  zero4.Enabled = False
+  IN4.enabled = False
+  softone4.Enabled = False
+  stonesl4.Enabled = False
+End
+
+Public Sub spwmslid4_Change()
+
+  softPwmWrite(4, spwmslid4.Value)
+  pwmval4.Text = Str$(spwmslid4.Value)
+  
+End
+
+Public Sub softone4_Click()
+
+  softToneCreate(4)
+  spwmon4.Enabled = False
+  plus4.Enabled = False
+  zero4.Enabled = False
+  IN4.enabled = False  
+  softone4.Enabled = False
+  spwmslid4.Enabled = False
+  softToneWrite(4, stonesl4.Value)
+  
+End
+
+Public Sub stonesl4_Change()
+
+  softToneWrite(4, stonesl4.Value)
+  stoneval4.Text = Str$(stonesl4.Value)  
+
+End
+
+Public Sub IN5_Click()
+
+  pinMode(5, PIN_INPUT)
+  port8[5] = PIN_INPUT
+  Draw5.Visible = True
+  poff5.Visible = True
+  pup5.Visible = True
+  pdwn5.Visible = True
+  zero5.Visible = False
+  plus5.Visible = False
+  spwmon5.Visible = False
+  spwmslid5.Visible = False
+  Labelpwm5.Visible = False
+  pwmval5.Visible = False
+  softone5.Visible = False
+  stonesl5.Visible = False
+  stoneval5.Visible = False
+  Labeltone5.Visible = False
+  
+  End
+
+Public Sub OUT5_Click()
+
+  pinMode(5, PIN_OUTPUT)
+  port8[5] = PIN_OUTPUT
+  Draw5.Visible = False
+  poff5.Visible = False
+  pup5.Visible = False
+  pdwn5.Visible = False
+  zero5.Visible = True
+  plus5.Visible = True
+  If (zero5.Value)
+    LED5.picture = img_ledoff
+    digitalWrite(5, 0)
+  Else
+    LED5.picture = img_ledon
+    digitalWrite(5, 1)
+  Endif 
+  spwmon5.Visible = True
+  spwmslid5.Visible = True
+  Labelpwm5.Visible = True
+  pwmval5.Visible = True
+  softone5.Visible = True
+  stonesl5.Visible = True
+  stoneval5.Visible = True
+  Labeltone5.Visible = True
+      
+End
+
+Public Sub poff5_Click()
+
+  pullUpDnControl(5, PUD_OFF)
+
+End
+
+Public Sub pup5_Click()
+
+  pullUpDnControl(5, PUD_UP)
+
+End
+
+Public Sub pdwn5_Click()
+
+  pullUpDnControl(5, PUD_DOWN)
+
+End
+
+Public Sub zero5_Click()
+
+  digitalWrite(5, 0)
+
+End
+
+Public Sub plus5_Click()
+
+  digitalWrite(5, 1)
+
+End
+
+Public Sub spwmon5_Click()
+
+  softPwmCreate(5, spwmslid5.Value, 100)
+  spwmon5.Enabled = False
+  plus5.Enabled = False
+  zero5.Enabled = False
+  IN5.enabled = False
+  softone5.Enabled = False
+  stonesl5.Enabled = False
+End
+
+Public Sub spwmslid5_Change()
+
+  softPwmWrite(5, spwmslid5.Value)
+  pwmval5.Text = Str$(spwmslid5.Value)
+  
+End
+
+Public Sub softone5_Click()
+
+  softToneCreate(5)
+  spwmon5.Enabled = False
+  plus5.Enabled = False
+  zero5.Enabled = False
+  IN5.enabled = False  
+  softone5.Enabled = False
+  spwmslid5.Enabled = False
+  softToneWrite(5, stonesl5.Value)
+  
+End
+
+Public Sub stonesl5_Change()
+
+  softToneWrite(5, stonesl5.Value)
+  stoneval5.Text = Str$(stonesl5.Value)  
+
+End
+
+Public Sub IN6_Click()
+
+  pinMode(6, PIN_INPUT)
+  port8[6] = PIN_INPUT
+  Draw6.Visible = True
+  poff6.Visible = True
+  pup6.Visible = True
+  pdwn6.Visible = True
+  zero6.Visible = False
+  plus6.Visible = False
+  spwmon6.Visible = False
+  spwmslid6.Visible = False
+  Labelpwm6.Visible = False
+  pwmval6.Visible = False
+  softone6.Visible = False
+  stonesl6.Visible = False
+  stoneval6.Visible = False
+  Labeltone6.Visible = False
+  
+  End
+
+Public Sub OUT6_Click()
+
+  pinMode(6, PIN_OUTPUT)
+  port8[6] = PIN_OUTPUT
+  Draw6.Visible = False
+  poff6.Visible = False
+  pup6.Visible = False
+  pdwn6.Visible = False
+  zero6.Visible = True
+  plus6.Visible = True
+  If (zero6.Value)
+    LED6.picture = img_ledoff
+    digitalWrite(6, 0)
+  Else
+    LED6.picture = img_ledon
+    digitalWrite(6, 1)
+  Endif 
+  spwmon6.Visible = True
+  spwmslid6.Visible = True
+  Labelpwm6.Visible = True
+  pwmval6.Visible = True
+  softone6.Visible = True
+  stonesl6.Visible = True
+  stoneval6.Visible = True
+  Labeltone6.Visible = True
+      
+End
+
+Public Sub poff6_Click()
+
+  pullUpDnControl(6, PUD_OFF)
+
+End
+
+Public Sub pup6_Click()
+
+  pullUpDnControl(6, PUD_UP)
+
+End
+
+Public Sub pdwn6_Click()
+
+  pullUpDnControl(6, PUD_DOWN)
+
+End
+
+Public Sub zero6_Click()
+
+  digitalWrite(6, 0)
+
+End
+
+Public Sub plus6_Click()
+
+  digitalWrite(6, 1)
+
+End
+
+Public Sub spwmon6_Click()
+
+  softPwmCreate(6, spwmslid6.Value, 100)
+  spwmon6.Enabled = False
+  plus6.Enabled = False
+  zero6.Enabled = False
+  IN6.enabled = False
+  softone6.Enabled = False
+  stonesl6.Enabled = False
+End
+
+Public Sub spwmslid6_Change()
+
+  softPwmWrite(6, spwmslid6.Value)
+  pwmval6.Text = Str$(spwmslid6.Value)
+  
+End
+
+Public Sub softone6_Click()
+
+  softToneCreate(6)
+  spwmon6.Enabled = False
+  plus6.Enabled = False
+  zero6.Enabled = False
+  IN6.enabled = False  
+  softone6.Enabled = False
+  spwmslid6.Enabled = False
+  softToneWrite(6, stonesl6.Value)
+  
+End
+
+Public Sub stonesl6_Change()
+
+  softToneWrite(6, stonesl6.Value)
+  stoneval6.Text = Str$(stonesl6.Value)  
+
+End
+
+Public Sub IN7_Click()
+
+  pinMode(7, PIN_INPUT)
+  port8[7] = PIN_INPUT
+  Draw7.Visible = True
+  poff7.Visible = True
+  pup7.Visible = True
+  pdwn7.Visible = True
+  zero7.Visible = False
+  plus7.Visible = False
+  spwmon7.Visible = False
+  spwmslid7.Visible = False
+  Labelpwm7.Visible = False
+  pwmval7.Visible = False
+  softone7.Visible = False
+  clcspin.Visible = False
+  clcfreq.Visible = False
+  
+  End
+
+Public Sub OUT7_Click()
+
+  pinMode(7, PIN_OUTPUT)
+  port8[7] = PIN_OUTPUT
+  Draw7.Visible = False
+  poff7.Visible = False
+  pup7.Visible = False
+  pdwn7.Visible = False
+  zero7.Visible = True
+  plus7.Visible = True
+  If (zero7.Value)
+    LED7.picture = img_ledoff
+    digitalWrite(7, 0)
+  Else
+    LED7.picture = img_ledon
+    digitalWrite(7, 1)
+  Endif 
+  spwmon7.Visible = True
+  spwmslid7.Visible = True
+  Labelpwm7.Visible = True
+  pwmval7.Visible = True
+  softone7.Visible = True
+  clcspin.Visible = True
+  clcfreq.Visible = True
+      
+End
+
+Public Sub poff7_Click()
+
+  pullUpDnControl(7, PUD_OFF)
+
+End
+
+Public Sub pup7_Click()
+
+  pullUpDnControl(7, PUD_UP)
+
+End
+
+Public Sub pdwn7_Click()
+
+  pullUpDnControl(7, PUD_DOWN)
+
+End
+
+Public Sub zero7_Click()
+
+  digitalWrite(7, 0)
+
+End
+
+Public Sub plus7_Click()
+
+  digitalWrite(7, 1)
+
+End
+
+Public Sub spwmon7_Click()
+
+  softPwmCreate(7, spwmslid7.Value, 100)
+  spwmon7.Enabled = False
+  plus7.Enabled = False
+  zero7.Enabled = False
+  IN7.enabled = False
+  softone7.Enabled = False
+  clcspin.Enabled = False
+End
+
+Public Sub spwmslid7_Change()
+
+  softPwmWrite(7, spwmslid7.Value)
+  pwmval7.Text = Str$(spwmslid7.Value)
+  
+End
+
+Public Sub softone7_Click()
+
+ If (softone7.Value = True)
+  pinMode(7, GPIO_CLOCK)
+  gpioClockSet(7, clcspin.Value)
+ Else
+   pinMode(7, PIN_OUTPUT)
+ Endif
+  
+End
+
+
+Public Sub SpinBox1_Change()
+
+  Timer1.delay = SpinBox1.Value
+
+End
+
+Public Sub Button1_Click()
+
+  Quit
+  
+End
+
+Public Sub RadioButton1_Click()
+
+  pwmSetMode(PWM_MODE_BAL)
+
+End
+
+Public Sub RadioButton2_Click()
+
+  pwmSetMode(PWM_MODE_MS)
+
+End
+
+Public Sub rangspin_Change()
+
+  pwmSetRange(rangspin.Value)
+  spwmslid1.MaxValue = rangspin.Value
+
+End
+
+Public Sub divspin_Change()
+
+  pwmSetClock(divspin.Value)
+
+End
+
+Public Sub clcspin_Change()
+
+  gpioClockSet(7, clcspin.Value)
+
+End
+
+Public Sub CheckBox1_Click()
+
+  Timer1.Enabled = CheckBox1.Value
+
+End
+
+Public Sub Button2_Click()
+
+  st = CheckBox1.Value
+  Timer1.Enabled = False
+  Shift.Show
+  CheckBox1.Value = False
+  
+End
+
+Public Sub Button3_Click()
+
+  st = CheckBox1.Value
+  Timer1.Enabled = False
+  I2C.Show
+  CheckBox1.Value = False
+
+End
+
+Public Sub Button4_Click()
+
+  st = CheckBox1.Value
+  Timer1.Enabled = False
+  SPI.Show
+  CheckBox1.Value = False
+
+End

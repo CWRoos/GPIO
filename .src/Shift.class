@@ -1,0 +1,93 @@
+' Gambas class file
+
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern shiftIn(dPin As Integer, cPin As Integer, order As Integer) As Integer
+Public Extern shiftOut(dPin As Integer, cPin As Integer, order As Integer, value As Integer)
+Public Extern pinMode(pin As Integer, pud As Integer)
+
+Public Const LSBFIRST As Integer = 0
+Public Const MSBFIRST As Integer = 1
+Public Const PIN_OUTPUT As Integer = 1
+Public Const PIN_INPUT As Integer = 0
+
+Public data As Integer = 0
+
+Public Sub Button4_Click()
+
+  FMain.Timer1.Enabled = FMain.st
+  FMain.CheckBox1.Value = FMain.st
+  Me.Close
+
+End
+
+Public Sub Button1_Click()
+
+  Dim i, ord As Integer
+  Dim fin$ As String
+  pinMode(datapinin.Value, PIN_INPUT)
+  pinMode(clockpinin.Value, PIN_OUTPUT)
+  If (lsbin.Value)
+   ord = LSBFIRST
+  Else
+    ord = MSBFIRST
+  Endif
+  i = shiftIn(datapinin.Value, clockpinin.Value, ord)
+  fin$ = Hex$(i, 2)
+  fin$ = fin$ & " - "
+  fin$ = fin$ & Str$(i)
+  fin$ = fin$ & " - "
+  fin$ = fin$ & Chr$(i)
+  result.text = fin$
+  pinMode(datapinin.Value, FMain.port8[datapinin.Value])
+  pinMode(clockpinin.Value, FMain.port8[clockpinin.Value])
+
+End
+
+Public Sub Button2_Click()
+  Dim i, ord As Integer
+  pinMode(datapinout.Value, PIN_OUTPUT)
+  pinMode(clockpinout.Value, PIN_OUTPUT)
+
+  If (lsbout.Value)
+   ord = LSBFIRST
+  Else
+    ord = MSBFIRST
+  Endif
+  shiftOut(datapinout.Value, clockpinout.Value, ord, data)
+  pinMode(datapinout.Value, FMain.port8[datapinout.Value])
+  pinMode(clockpinout.Value, FMain.port8[clockpinout.Value])
+
+End
+
+Public Sub senddata_KeyRelease()
+
+  If (I2C.valcheck(senddata.Text, choice.Text) = 1)
+    senddata.text = ""
+    Return
+  Endif  
+  Select Case choice.Text
+    Case "HEX" 
+       data = Val("&H" & senddata.Text)
+    Case "Decimal"
+       data = Val(senddata.Text) And 255
+    Case "ASCII"
+       data = Asc(senddata.Text)
+  End Select
+End
+
+Public Sub choice_Click()
+
+    Select Case choice.Text
+    Case "HEX" 
+       senddata.MaxLength = 2
+       senddata.Text = Hex$(data, 2)
+    Case "Decimal"
+       senddata.MaxLength = 3
+       senddata.Text = data
+    Case "ASCII"
+       senddata.MaxLength = 1
+       senddata.Text = Chr(data)
+  End Select
+  senddata.SetFocus()
+End

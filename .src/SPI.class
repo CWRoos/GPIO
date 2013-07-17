@@ -1,0 +1,77 @@
+' Gambas class file
+
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern wiringPiSPISetup(channel As Integer, speed As Integer) As Integer
+Public Extern wiringPiSPIDataRW(channel As Integer, data As Pointer, leng As Integer) As Integer
+
+Public buf As Pointer
+Public fd As Integer
+
+Public Sub Button1_Click()
+
+  FMain.Timer1.Enabled = FMain.st
+  FMain.CheckBox1.Value = FMain.st
+  Free(buf)
+  Me.Close
+
+End
+
+Public Sub Form_Open()
+  
+  Shell ("gpio load spi")
+  buf = Alloc(4096)
+  put_hex()
+  
+End
+
+Public Sub put_hex()
+  
+  Dim p As Integer
+  Dim bb As Stream
+  output.text = ""
+  If ish.text = "ASCII"
+    bb = Memory buf For Read
+    output.text = Read #bb, leng.Value
+  Else
+    For p = 0 To leng.Value
+      If (p Mod 16) = 0 
+        output.text = output.text & "\n  "
+      Else
+        output.text = output.text & "-"
+      Endif
+     output.text = output.text & Hex$(Byte@(buf + p), 2)
+   Next
+  Endif
+  
+End
+
+Public Sub Button2_Click()
+
+  fd = wiringPiSPISetup(setupchan.value, speed.value)
+
+End
+
+Public Sub Button3_Click()
+
+  wiringPiSPIDataRW(rwchan.value, buf, leng.value)
+  put_hex()
+
+End
+
+Public Sub Button4_Click()
+
+  Dim bb As Stream 
+  If Dialog.OpenFile() Then Return
+  bb = Memory buf For Write 
+  Write #bb, File.Load(Dialog.Path)
+  leng.Value = Stat(Dialog.Path).Size
+  put_hex()
+  
+End
+
+Public Sub ish_Click()
+
+  put_hex()
+
+End

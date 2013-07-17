@@ -1,0 +1,101 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(38.8571,29.1429,83,38)
+  Text = ("Shift Controll")
+  Icon = Picture["gpio.png"]
+  { Panel2 Panel
+    MoveScaled(1,19,80,11)
+  }
+  { Panel1 Panel
+    MoveScaled(1,5,80,11)
+  }
+  { Button1 Button
+    MoveScaled(4,9,16,4)
+    Text = ("Shift IN")
+  }
+  { clockpinin SpinBox
+    MoveScaled(32,8,7,3)
+    MaxValue = 7
+    Value = 2
+  }
+  { datapinin SpinBox
+    MoveScaled(32,11,7,3)
+    MaxValue = 7
+    Value = 3
+  }
+  { Label1 Label
+    MoveScaled(23,8,9,3)
+    Text = ("Clock PIN")
+  }
+  { Label2 Label
+    MoveScaled(23,11,9,3)
+    Text = ("Data PIN")
+  }
+  { result TextBox
+    MoveScaled(59,9,15,4)
+    Text = ("00 - 0 - ")
+    ReadOnly = True
+  }
+  { Button2 Button
+    MoveScaled(4,23,16,4)
+    Text = ("Shift OUT")
+  }
+  { clockpinout SpinBox
+    MoveScaled(32,22,7,3)
+    MaxValue = 7
+    Value = 4
+  }
+  { datapinout SpinBox
+    MoveScaled(32,25,7,3)
+    MaxValue = 7
+    Value = 5
+  }
+  { Label3 Label
+    MoveScaled(23,22,9,3)
+    Text = ("Clock PIN")
+  }
+  { Label4 Label
+    MoveScaled(23,25,9,3)
+    Text = ("Data PIN")
+  }
+  { senddata TextBox
+    MoveScaled(59,23,7,4)
+    Text = ("00")
+    MaxLength = 2
+  }
+  { Panel3 Panel
+    MoveScaled(44,8,13,7)
+    { msbin RadioButton
+      MoveScaled(0,3,12,3)
+      Text = ("MSB First")
+    }
+    { lsbin RadioButton
+      MoveScaled(0,0,12,3)
+      Text = ("LSB First")
+      Value = True
+    }
+  }
+  { Panel4 Panel
+    MoveScaled(44,22,13,7)
+    { lsbout RadioButton
+      MoveScaled(0,0,12,3)
+      Text = ("LSB First")
+      Value = True
+    }
+    { msbout RadioButton
+      MoveScaled(0,3,12,3)
+      Text = ("MSB First")
+    }
+  }
+  { choice ComboBox
+    MoveScaled(66,23,13,4)
+    ReadOnly = True
+    List = [("HEX"), ("Decimal"), ("ASCII")]
+    Text = ("HEX")
+  }
+  { Button4 Button
+    MoveScaled(64,32,16,4)
+    Text = ("Close")
+  }
+}
