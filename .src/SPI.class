@@ -69,6 +69,7 @@ Public Sub Button4_Click()
 
   Dim bb As Stream 
   If Dialog.OpenFile() Then Return
+  If Stat(Dialog.Path).Size > 4095 Then Return 
   bb = Memory buf For Write 
   Write #bb, File.Load(Dialog.Path)
   leng.Value = Stat(Dialog.Path).Size
