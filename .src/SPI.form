@@ -71,4 +71,14 @@
     MoveScaled(38,14,10,3)
     Text = ("Dsplay as")
   }
+  { PictureBox1 PictureBox
+    MoveScaled(64,18,3,3)
+    Visible = False
+    Picture = Picture["up.png"]
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(64,56,3,3)
+    Visible = False
+    Picture = Picture["down.png"]
+  }
 }

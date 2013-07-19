@@ -7,6 +7,7 @@ Public Extern wiringPiSPIDataRW(channel As Integer, data As Pointer, leng As Int
 
 Public buf As Pointer
 Public fd As Integer
+Public lo As Integer
 
 Public Sub Buttoncl_Click()
 
@@ -27,6 +28,7 @@ Public Sub Form_Open()
   
   Shell ("gpio load spi")
   buf = Alloc(4096)
+  lo = 0
   put_hex()
   
 End
@@ -40,14 +42,29 @@ Public Sub put_hex()
     bb = Memory buf For Read
     output.text = Read #bb, leng.Value
   Else
-    For p = 0 To leng.Value
+    For p = 0 To 255
+      If (p + lo) > leng.Value
+        PictureBox2.Visible = False
+        Return
+      Endif
       If (p Mod 16) = 0 
         output.text = output.text & "\n  "
       Else
         output.text = output.text & "-"
       Endif
-     output.text = output.text & Hex$(Byte@(buf + p), 2)
-   Next
+     output.text = output.text & Hex$(Byte@(buf + p + lo), 2)
+    Next
+    If lo = 0
+      PictureBox1.Visible = False
+    Else
+      PictureBox1.Visible = True
+    Endif
+    If leng.Value > 255 
+      PictureBox2.Visible = True
+    Else
+      PictureBox2.Visible = False 
+    Endif
+    speed.value = lo
   Endif
   
 End
@@ -73,6 +90,7 @@ Public Sub Button4_Click()
   bb = Memory buf For Write 
   Write #bb, File.Load(Dialog.Path)
   leng.Value = Stat(Dialog.Path).Size
+  lo = 0
   put_hex()
   
 End
@@ -81,4 +99,21 @@ Public Sub ish_Click()
 
   put_hex()
 
+End
+
+
+Public Sub PictureBox1_MouseDown()
+
+  If ish.text = "ASCII" Then Return
+  If lo >= 256 Then lo = lo - 256
+  put_hex()
+
+End
+
+Public Sub PictureBox2_MouseDown()
+
+  If ish.text = "ASCII" Then Return
+  If (lo + 256) <= leng.Value Then lo = lo + 256
+  put_hex()
+  
 End
