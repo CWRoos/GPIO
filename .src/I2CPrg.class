@@ -1,0 +1,210 @@
+' Gambas class file
+
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern wiringPiI2CSetup(devId As Integer) As Integer
+Public Extern wiringPiI2CRead(fd As Integer) As Integer
+Public Extern wiringPiI2CWrite(fd As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CWriteReg8(fd As Integer, reg As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CWriteReg16(fd As Integer, reg As Integer, data As Integer) As Integer
+Public Extern wiringPiI2CReadReg8(fd As Integer, reg As Integer) As Integer
+Public Extern wiringPiI2CReadReg16(fd As Integer, reg As Integer) As Integer
+Public Extern digitalRead(pin As Integer) As Integer
+Public Extern digitalWrite(pin As Integer, value As Integer)
+Public Extern pinMode(pin As Integer, pud As Integer)
+
+Public Const PIN_OUTPUT As Integer = 1
+Public Const PIN_INPUT As Integer = 0
+
+Public fd As Integer
+
+Public Sub Button1_Click()
+
+  Tinput.Text = ""
+
+End
+
+Public Sub Button2_Click()
+
+  Tres.Text = ""
+
+End
+
+Public Sub Form_Close()
+  
+  Dim x As Integer
+  For x = 0 To 7
+    pinMode(x, FMain.port8[x])
+  Next
+  I2CPrg.Close
+    
+End
+
+Public Sub Button3_Click()
+
+  Form_Close()
+
+End
+
+Public Sub Button4_Click()
+
+  I2Chlp.Show
+
+End
+
+Public Sub test() As Integer
+  
+  If fd = -1
+   Tres.Text = Tres.Text & "Device not open\n"
+   Return False
+  Else
+    Return True
+  Endif
+End
+
+
+Public Sub Button5_Click()
+
+  Dim l$, c$, r$, s$ As String
+  Dim i, y, x, t As Integer = 1
+  If Tinput.text = "" Then Return
+  Do
+     y = InStr(Mid$(Tinput.text, i), "\n")
+     If y = 0 Then y = Len(Tinput.Text)
+     l$ = Mid$(Tinput.Text, i, y)
+     If Len(l$) < 2 Then Continue
+     l$ = LTrim$(RTrim$(l$))
+     l$ = UCase$(l$)
+     c$ = Left$(l$, 2)
+     l$ = Mid$(l$, 3)
+     l$ = LTrim$(l$)
+     Select Case c$
+       Case "WT"
+         If Val(l$) = Null
+            Tres.Text = Tres.Text & "WT Data error or missing\n"
+         Else
+            x = Val(l$)
+            If x > 1000 Then x = 1000
+            Sleep x / 1000
+            Tres.Text = Tres.Text & "Wait " & Str$(x) & "mS\n"
+         Endif
+       Case "OP"
+         If Val("&H" & l$) = Null
+            Tres.Text = Tres.Text & "OP Data error or missing\n"
+         Else         
+          x = Val("&H" & l$)
+          If x < 3 Then x = 3
+          If x > 119 Then x = 119
+          fd = wiringPiI2CSetup(x)
+          If test() Then Tres.Text = Tres.Text & "Device " & Hex$(Val("&H" & l$), 2) & " is open\n"
+         Endif
+       Case "RD"
+         If test() Then Tres.Text = Tres.Text & "Data Read < " & Hex$(wiringPiI2CRead(fd), 2) & "\n"
+       Case "WR"
+         If Val("&H" & l$) = Null
+            Tres.Text = Tres.Text & "WR Data error or missing\n"
+         Else
+            If test() Then wiringPiI2CWrite(fd, Val("&H" & l$))
+            If test() Then Tres.Text = Tres.Text & "Data Write > " & Hex$(Val("&H" & l$), 2) & "\n"
+         Endif
+       Case "RR"
+         x = InStr(l$, " ")
+         If x <> 0
+           r$ = Mid$(l$, x + 1, 1)
+           l$ = Left$(l$, x)
+         Endif         
+         If Val("&H" & l$) = Null
+            Tres.Text = Tres.Text & "RR Data error or missing\n"
+         Else
+            If r$ = "W"
+                If test() Then Tres.Text = Tres.Text & "Reg " & Hex$(Val("&H" & l$), 2) & " Read < " & Hex$(wiringPiI2CReadReg16(fd, Val("&H" & l$)), 4) & "\n"
+            Else
+                If test() Then Tres.Text = Tres.Text & "Reg " & Hex$(Val("&H" & l$), 2) & " Read < " & Hex$(wiringPiI2CReadReg8(fd, Val("&H" & l$)), 2) & "\n"
+            Endif
+         Endif
+       Case "RW"
+         x = InStr(l$, " ")
+         If x <> 0
+           s$ = Mid$(l$, x + 1)
+           l$ = Left$(l$, x)
+         Endif         
+         x = InStr(s$, " ")
+         If x <> 0
+           r$ = Mid$(s$, x + 1, 1)
+           s$ = Left$(s$, x)
+         Endif         
+         If Val("&H" & l$) = Null Or If Val("&H" & s$) = Null
+            Tres.Text = Tres.Text & "RW Data error or missing\n"
+         Else
+            If r$ = "W"
+                If test() Then wiringPiI2CWriteReg16(fd, Val("&H" & l$), Val("&H" & s$))
+                If test() Then Tres.Text = Tres.Text & "Reg " & Hex$(Val("&H" & l$), 2) & " Write > " & Hex$(Val("&H" & s$), 4) & "\n"
+            Else
+                If test() Then wiringPiI2CWriteReg8(fd, Val("&H" & l$), Val("&H" & s$))
+                If test() Then Tres.Text = Tres.Text & "Reg " & Hex$(Val("&H" & l$), 2) & " Write > " & Hex$(Val("&H" & s$), 2) & "\n"
+            Endif
+         Endif
+       Case "PH"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "PH Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_OUTPUT)
+          digitalWrite(x, 1)
+          Tres.Text = Tres.Text & "Pin " & Str$(x) & " > is high\n"
+         Endif
+       Case "PL"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "PL Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_OUTPUT)
+          digitalWrite(x, 0)
+          Tres.Text = Tres.Text & "Pin " & Str$(x) & " > is low\n"
+         Endif
+       Case "WH"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "WH Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_INPUT)
+          t = 0
+          While digitalRead(x) = 0
+            Sleep 1 / 1000
+            t = t + 1
+            If t = 1000 Then Break
+          Wend
+          If t = 1000
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is timed out\n"
+          Else
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is high\n"
+          Endif
+         Endif
+       Case "WL"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "WL Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_INPUT)
+          t = 0
+          While digitalRead(x) = 1
+            Sleep 1 / 1000
+            t = t + 1
+            If t = 1000 Then Break
+          Wend
+          If t = 1000
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is timed out\n"
+          Else
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is low\n"
+          Endif
+         Endif
+        Case Else
+          Tres.Text = Tres.Text & "Unkwown Command " & c$ & "\n"
+     End Select
+     i = i + y
+  Loop Until i >= Len(Tinput.Text) 
+End

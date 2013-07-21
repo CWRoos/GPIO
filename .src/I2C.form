@@ -425,4 +425,8 @@
   { Separator5 Separator
     MoveScaled(-1,0,129,4)
   }
+  { Button2 Button
+    MoveScaled(109,40,16,9)
+    Text = ("         I2C\nProgramming")
+  }
 }

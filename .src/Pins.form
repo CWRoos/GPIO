@@ -1,0 +1,18 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(48.8571,15.1429,65,64)
+  Background = Color.TextBackground
+  Text = ("PIN Layout")
+  Icon = Picture["gpio.png"]
+  { PictureBox1 PictureBox
+    MoveScaled(-1,0,67,54)
+    Background = Color.SelectedForeground
+    Picture = Picture["pins.png"]
+  }
+  { Button1 Button
+    MoveScaled(23,57,16,4)
+    Background = Color.Background
+    Text = ("Close")
+  }
+}

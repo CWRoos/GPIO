@@ -12,6 +12,7 @@
   { output TextArea
     MoveScaled(5,18,59,40)
     Font = Font["Monospace"]
+    ReadOnly = True
   }
   { Button2 Button
     MoveScaled(6,2,11,4)
@@ -45,17 +46,10 @@
     Step = 100000
     Value = 10000000
   }
-  { Button3 Button
-    MoveScaled(6,8,16,4)
+  { breadwrite Button
+    MoveScaled(49,8,14,4)
+    Enabled = False
     Text = ("Write / Read")
-  }
-  { Label4 Label
-    MoveScaled(23,9,9,3)
-    Text = ("Channel")
-  }
-  { rwchan SpinBox
-    MoveScaled(32,9,5,3)
-    MaxValue = 1
   }
   { Button4 Button
     MoveScaled(5,59,16,4)
@@ -80,5 +74,23 @@
     MoveScaled(64,56,3,3)
     Visible = False
     Picture = Picture["down.png"]
+  }
+  { bread Button
+    MoveScaled(6,8,9,4)
+    Enabled = False
+    Text = ("Read")
+  }
+  { bwrite Button
+    MoveScaled(20,8,9,4)
+    Enabled = False
+    Text = ("Write")
+  }
+  { Button1 Button
+    MoveScaled(27,59,16,6)
+    Text = ("        SPI\nProgramming")
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(35,8,9,5)
+    Picture = Picture["spi.png"]
   }
 }

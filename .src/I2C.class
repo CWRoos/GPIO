@@ -772,3 +772,9 @@ Public Sub rrw3_Click()
 End
 
 
+
+Public Sub Button2_Click()
+
+  I2CPrg.Show
+
+End

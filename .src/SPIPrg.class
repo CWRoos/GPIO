@@ -1,0 +1,197 @@
+' Gambas class file
+
+Library "/usr/local/lib/libwiringPi"
+
+Public Extern wiringPiSPISetup(channel As Integer, speed As Integer) As Integer
+Public Extern wiringPiSPIDataRW(channel As Integer, data As Pointer, leng As Integer) As Integer
+Public Extern digitalRead(pin As Integer) As Integer
+Public Extern digitalWrite(pin As Integer, value As Integer)
+Public Extern pinMode(pin As Integer, pud As Integer)
+
+Public Const PIN_OUTPUT As Integer = 1
+Public Const PIN_INPUT As Integer = 0
+
+Public fd As Integer
+Public fi As File 
+
+Public Sub Form_Close()
+  
+  Dim x As Integer
+  For x = 0 To 7
+    pinMode(x, FMain.port8[x])
+  Next
+  SPIPrg.Close
+    
+End
+
+Public Sub Button3_Click()
+
+  Form_Close()
+
+End
+
+
+Public Sub Button1_Click()
+
+  Tinput.Text = ""
+
+End
+
+Public Sub Button2_Click()
+
+  Tres.Text = ""
+
+End
+
+
+Public Sub Button4_Click()
+
+  SPIhlp.Show
+
+End
+
+Public Sub test() As Integer
+  
+  If fd = -1
+   Tres.Text = Tres.Text & "Device not open\n"
+   Return False
+  Else
+    Return True
+  Endif
+End
+
+
+Public Sub Button5_Click()
+
+  Dim l$, c$, r$ As String
+  Dim i, y, x, t As Integer = 1
+  Dim b As Byte
+  If Tinput.text = "" Then Return
+  Do
+     y = InStr(Mid$(Tinput.text, i), "\n")
+     If y = 0 Then y = Len(Tinput.Text)
+     l$ = Mid$(Tinput.Text, i, y)
+     If Len(l$) < 2 Then Continue
+     l$ = LTrim$(RTrim$(l$))
+     c$ = Left$(l$, 2)
+     c$ = UCase$(c$)
+     l$ = Mid$(l$, 3)
+     l$ = LTrim$(l$)
+     Select Case c$
+       Case "WT"
+         If Val(l$) = Null
+            Tres.Text = Tres.Text & "WT Data error or missing\n"
+         Else
+            x = Val(l$)
+            If x > 1000 Then x = 1000
+            Sleep x / 1000
+            Tres.Text = Tres.Text & "Wait " & Str$(x) & "mS\n"
+         Endif
+       Case "OP"
+         If Val(Left$(l$, 1)) = Null Or If Val(Mid$(l$, 2)) = Null
+            Tres.Text = Tres.Text & "OP Data error or missing\n"
+         Else
+          t = Val(Left$(l$, 1))
+          If t > 1 Then t = 0
+          x = Val(Mid$(l$, 2)) 
+          If x < 50 Then x = 50
+          If x > 320 Then x = 320        
+          fd = wiringPiSPISetup(t, x * 1000)
+          If t = 0
+             fi = Open "/dev/spidev0.0" For Read Write
+          Else
+             fi = Open "/dev/spidev0.1" For Read Write
+          Endif         
+          If test() Then Tres.Text = Tres.Text & "Dev " & Str$(t) & " is open at " & Str$(x) & "kHz\n"
+         Endif
+       Case "RD"
+         If test() Then b = Read #fi As Byte
+         If test() Then Tres.Text = Tres.Text & "Data Read < " & Hex$(b, 2) & "\n"
+       Case "WR"
+         If Val("&H" & l$) = Null
+            Tres.Text = Tres.Text & "WR Data error or missing\n"
+         Else
+            b = Val("&H" & l$)
+            If test() Then Write #fi, b As Byte
+            If test() Then Tres.Text = Tres.Text & "Data Write > " & Hex$(Val("&H" & l$), 2) & "\n"
+         Endif
+       Case "RS"
+         If Val(l$) = Null
+            Tres.Text = Tres.Text & "RS Data error or missing\n"
+         Else
+            If test() Then Read #fi, r$, Val(l$)
+            r$ = LTrim$(RTrim$(r$))
+'             If r$ <> "" 
+              If test() Then Tres.Text = Tres.Text & "Str < " & r$ & "\n"
+'             Else
+'               If test() Then Tres.Text = Tres.Text & "Str < NULL\n"
+'             Endif
+         Endif
+       Case "WS"
+            If test() Then Write #fi, l$ As String
+            If test() Then Tres.Text = Tres.Text & "Str > " & l$ & "\n"
+       Case "PH"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "PH Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_OUTPUT)
+          digitalWrite(x, 1)
+          Tres.Text = Tres.Text & "Pin " & Str$(x) & " is high\n"
+         Endif
+       Case "PL"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "PL Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_OUTPUT)
+          digitalWrite(x, 0)
+          Tres.Text = Tres.Text & "Pin " & Str$(x) & " is low\n"
+         Endif
+       Case "WH"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "WH Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_INPUT)
+          t = 0
+          While digitalRead(x) = 0
+            Sleep 1 / 1000
+            t = t + 1
+            If t = 1000 Then Break
+          Wend
+          If t = 1000
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is timed out\n"
+          Else
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is high\n"
+          Endif
+         Endif
+       Case "WL"
+         If Val(Left$(l$, 1)) = Null
+            Tres.Text = Tres.Text & "WL Data error or missing\n"
+         Else
+          x = Val(Left$(l$, 1))
+          If x > 7 Then x = 0
+          pinMode(x, PIN_INPUT)
+          t = 0
+          While digitalRead(x) = 1
+            Sleep 1 / 1000
+            t = t + 1
+            If t = 1000 Then Break
+          Wend
+          If t = 1000
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is timed out\n"
+          Else
+             Tres.Text = Tres.Text & "Pin " & Str$(x) & " < is low\n"
+          Endif
+         Endif
+      Case Else
+          Tres.Text = Tres.Text & "Unkwown Command " & c$ & "\n"
+     End Select
+     i = i + y
+  Loop Until i >= Len(Tinput.Text) 
+
+End

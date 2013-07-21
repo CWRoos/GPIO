@@ -1,0 +1,15 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(80.5714,13.1429,63,44)
+  Text = ("I2C Help")
+  Icon = Picture["gpio.png"]
+  { Label1 Label
+    MoveScaled(4,0,57,36)
+    Text = ("OP xx\t\t- Open device xx\nRD\t\t\t- Read a byte\nWR xx\t\t- Write byte xx\nRR xx \t\t- Read a byte from register xx\nRW xx yy \t\t- Write byte yy to register xx\nRR xx W\t\t- Read a word from register xx\nRW xx yy W\t- Write word yy to register xx\nWT xxx\t\t- Wait xxx mS max 1S\nPH x\t\t- Set GPIO pin x high\nPL x\t\t\t- Set GPIO pin x low\nWH x\t\t- Wait for GPIO pin x to go high (max wait 1S)\nWL x\t\t- Wait for GPIO pin x to go low (max wait 1S)\n\n\tAll values in Hex except WT\n\n\tLast opened device is active")
+  }
+  { Button1 Button
+    MoveScaled(23,37,16,4)
+    Text = ("Close")
+  }
+}

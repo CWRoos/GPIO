@@ -8,6 +8,7 @@ Public Extern wiringPiSPIDataRW(channel As Integer, data As Pointer, leng As Int
 Public buf As Pointer
 Public fd As Integer
 Public lo As Integer
+Public fi As File 
 
 Public Sub Buttoncl_Click()
 
@@ -41,6 +42,8 @@ Public Sub put_hex()
   If ish.text = "ASCII"
     bb = Memory buf For Read
     output.text = Read #bb, leng.Value
+    PictureBox1.Visible = False
+    PictureBox2.Visible = False
   Else
     For p = 0 To 255
       If (p + lo) > leng.Value
@@ -72,12 +75,22 @@ End
 Public Sub Button2_Click()
 
   fd = wiringPiSPISetup(setupchan.value, speed.value)
+  If fd = -1 Then Return
+  If setupchan.value = 0
+    fi = Open "/dev/spidev0.0" For Read Write
+  Else
+    fi = Open "/dev/spidev0.1" For Read Write
+  Endif
+  
+  bread.Enabled = True
+  bwrite.Enabled = True
+  breadwrite.Enabled = True
 
 End
 
-Public Sub Button3_Click()
+Public Sub breadwrite_Click()
 
-  wiringPiSPIDataRW(rwchan.value, buf, leng.value)
+  wiringPiSPIDataRW(setupchan.value, buf, leng.value)
   put_hex()
 
 End
@@ -116,4 +129,28 @@ Public Sub PictureBox2_MouseDown()
   If (lo + 256) <= leng.Value Then lo = lo + 256
   put_hex()
   
+End
+
+
+Public Sub bread_Click()
+
+ Dim by As Byte
+ Dim i As Integer
+ Dim p As Stream
+ p = Memory buf For Write
+ Write #p, Read #fi, leng.Value
+ put_hex()
+ 
+End
+
+Public Sub bwrite_Click()
+
+  Write #fi, buf, leng.Value
+
+End
+
+Public Sub Button1_Click()
+
+  SPIPrg.Show
+
 End

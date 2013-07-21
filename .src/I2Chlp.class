@@ -1,0 +1,9 @@
+' Gambas class file
+
+
+Public Sub Button1_Click()
+
+  I2Chlp.Close
+
+End
+

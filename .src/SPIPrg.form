@@ -1,0 +1,43 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(18.5714,13.1429,61,68)
+  Text = ("SPI Programming")
+  Icon = Picture["gpio.png"]
+  { Label1 Label
+    MoveScaled(3,5,25,3)
+    Text = ("Input")
+  }
+  { Label2 Label
+    MoveScaled(32,5,25,3)
+    Text = ("Result")
+  }
+  { Button1 Button
+    MoveScaled(19,1,8,4)
+    Text = ("Clear")
+  }
+  { Button2 Button
+    MoveScaled(49,1,8,4)
+    Text = ("Clear")
+  }
+  { Button3 Button
+    MoveScaled(41,63,16,4)
+    Text = ("Close")
+  }
+  { Button4 Button
+    MoveScaled(3,63,16,4)
+    Text = ("Help")
+  }
+  { Button5 Button
+    MoveScaled(3,1,8,4)
+    Text = ("Run")
+  }
+  { Tres TextArea
+    MoveScaled(32,8,25,53)
+    ReadOnly = True
+  }
+  { Tinput TextArea
+    MoveScaled(3,8,25,53)
+    Text = ("OP 0 100\nRD\nWR A0\nWT 10\nRS 5\nWS Hello\n\n")
+  }
+}

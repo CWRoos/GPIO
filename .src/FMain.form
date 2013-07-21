@@ -894,7 +894,7 @@
     Value = CheckBox.True
   }
   { Separator10 Separator
-    MoveScaled(31,72.1429,1,8.5714)
+    MoveScaled(31,72.1429,1,8)
   }
   { Label11 Label
     MoveScaled(2,73,12,2)
@@ -904,15 +904,22 @@
     MoveScaled(110,72.1429,1,8)
   }
   { Button2 Button
-    MoveScaled(36,75,16,4)
+    MoveScaled(54,75,16,4)
     Text = ("Shift")
   }
   { Button3 Button
-    MoveScaled(63,75,16,4)
+    MoveScaled(73,75,16,4)
     Text = ("I2C")
   }
   { Button4 Button
-    MoveScaled(90,75,16,4)
+    MoveScaled(92,75,16,4)
     Text = ("SPI")
+  }
+  { Button5 Button
+    MoveScaled(34,75,16,4)
+    Text = ("Pin Layout")
+  }
+  { Separator12 Separator
+    MoveScaled(51.4286,72.1429,1,8)
   }
 }
