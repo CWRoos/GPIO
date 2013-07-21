@@ -8,9 +8,7 @@ Count=0
 Geometry=[0,0,210,210]
 
 [OpenFile]
-Active=1
-File[1]=".src/FMain.form"
-Count=1
+Count=0
 
 [Watches]
 Count=0

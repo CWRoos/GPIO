@@ -20,24 +20,32 @@
     MoveScaled(49,1,8,4)
     Text = ("Clear")
   }
-  { Button3 Button
-    MoveScaled(41,63,16,4)
-    Text = ("Close")
-  }
-  { Button4 Button
-    MoveScaled(3,63,16,4)
-    Text = ("Help")
-  }
   { Button5 Button
     MoveScaled(3,1,8,4)
     Text = ("Run")
   }
   { Tres TextArea
-    MoveScaled(32,8,25,53)
+    MoveScaled(31.5714,8,27.1429,53)
     ReadOnly = True
   }
   { Tinput TextArea
-    MoveScaled(3,8,25,53)
+    MoveScaled(2.1429,8,27.1429,53)
     Text = ("OP 0 100\nRD\nWR A0\nWT 10\nRS 5\nWS Hello\n\n")
+  }
+  { Button6 Button
+    MoveScaled(17,63,12,4)
+    Text = ("Load")
+  }
+  { Button4 Button
+    MoveScaled(31.5714,63,12,4)
+    Text = ("Help")
+  }
+  { Button3 Button
+    MoveScaled(46.1429,63,12,4)
+    Text = ("Close")
+  }
+  { Button7 Button
+    MoveScaled(2.4286,63,12,4)
+    Text = ("Save")
   }
 }

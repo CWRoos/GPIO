@@ -208,3 +208,24 @@ Public Sub Button5_Click()
      i = i + y
   Loop Until i >= Len(Tinput.Text) 
 End
+
+Public Sub Button6_Click()
+
+  Dialog.Title = "Open I2C File"
+  Dialog.Filter = ["*.i2c", "I2C Files", "*", "All files"]
+  Dialog.Path = "./home/pi/"
+  If Dialog.OpenFile() Then Return
+  Tinput.Text = File.Load(Dialog.Path)
+
+End
+
+Public Sub Button7_Click()
+
+  Dialog.Title = "Save I2C File"
+  Dialog.Filter = ["*.i2c", "I2C Files"]
+  Dialog.Path = "./home/pi/"
+  If Dialog.SaveFile() Then Return
+  If InStr(Lower$(Dialog.Path), ".i2c") = 0 Then Dialog.Path = Dialog.Path & ".i2c"
+  File.Save(Dialog.Path, Tinput.Text)
+
+End

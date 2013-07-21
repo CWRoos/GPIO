@@ -88,12 +88,12 @@ Public Sub Button5_Click()
             Tres.Text = Tres.Text & "Wait " & Str$(x) & "mS\n"
          Endif
        Case "OP"
-         If Val(Left$(l$, 1)) = Null Or If Val(Mid$(l$, 2)) = Null
+         If Val(Left$(l$, 1)) = Null Or If Val(Mid$(l$, 3)) = Null
             Tres.Text = Tres.Text & "OP Data error or missing\n"
          Else
           t = Val(Left$(l$, 1))
           If t > 1 Then t = 0
-          x = Val(Mid$(l$, 2)) 
+          x = Val(Mid$(l$, 3)) 
           If x < 50 Then x = 50
           If x > 320 Then x = 320        
           fd = wiringPiSPISetup(t, x * 1000)
@@ -193,5 +193,26 @@ Public Sub Button5_Click()
      End Select
      i = i + y
   Loop Until i >= Len(Tinput.Text) 
+
+End
+
+Public Sub Button6_Click()
+
+  Dialog.Title = "Open SPI File"
+  Dialog.Filter = ["*.spi", "SPI Files", "*", "All files"]
+  Dialog.Path = "./home/pi/"
+  If Dialog.OpenFile() Then Return
+  Tinput.Text = File.Load(Dialog.Path)
+
+End
+
+Public Sub Button7_Click()
+
+  Dialog.Title = "Save SPI File"
+  Dialog.Filter = ["*.spi", "SPI Files"]
+  Dialog.Path = "./home/pi/"
+  If Dialog.SaveFile() Then Return
+  If InStr(Lower$(Dialog.Path), ".spi") = 0 Then Dialog.Path = Dialog.Path & ".spi"
+  File.Save(Dialog.Path, Tinput.Text)
 
 End
