@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Mon, 22 Jul 2013 12:00:00 +0000
+Source: gpio
+Binary: gpio
+Architecture: source all
+Version: 0.8.361-1
+Distribution: unstable
+Urgency: low
+Maintainer: pi <roossien@gmail.com>
+Changed-By: pi <roossien@gmail.com>
+Description: 
+ gpio       - This is GPIO Controll
+Changes: 
+ gpio (0.8.361-1) unstable; urgency=low
+ .
+   * Initial release
+Checksums-Sha1: 
+ 6e33cf6119288fb40abdce8c0097a05b4c91a708 955 gpio_0.8.361-1.dsc
+ a17cc2bcd2d9a73c113edcddfa3743f8e0ae01f6 90829 gpio_0.8.361.orig.tar.gz
+ f6e055baac77599c5246cc4baa48cd76257bbd23 1087 gpio_0.8.361-1.diff.gz
+ c3536276edf5e005591e0c3e62a7937c6fba484d 66720 gpio_0.8.361-1_all.deb
+Checksums-Sha256: 
+ 7bdee1f9a50be0f818d06a9c1d46ab51eefdfabc99b177c0e90522090d336791 955 gpio_0.8.361-1.dsc
+ 155f6e24457f7de4890b6b16de702d2a233f7ee3804c0f407686e6f9f95199c0 90829 gpio_0.8.361.orig.tar.gz
+ 1cfe79c5641c1a17cd473c243f39db1f1bfd13e82a7d8833a1af6bd74a76ad5b 1087 gpio_0.8.361-1.diff.gz
+ 616b18aedc6e31d3d06d46bf78015328eb8b3f65c9afc716b4b4ff7669f3360e 66720 gpio_0.8.361-1_all.deb
+Files: 
+ 9e0081f27e1b5f878b2be6898cddfbf3 955 contrib/electronics optional gpio_0.8.361-1.dsc
+ c8cd0b24253c78c821ed357e38c1d770 90829 contrib/electronics optional gpio_0.8.361.orig.tar.gz
+ 382925183e731e6d75264e381102902f 1087 contrib/electronics optional gpio_0.8.361-1.diff.gz
+ 53961b7da638eb891b454801eebb70cb 66720 contrib/electronics optional gpio_0.8.361-1_all.deb

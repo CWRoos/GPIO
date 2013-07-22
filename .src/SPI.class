@@ -98,6 +98,7 @@ End
 Public Sub Button4_Click()
 
   Dim bb As Stream 
+  Dialog.Path = "./home/pi/"
   If Dialog.OpenFile() Then Return
   If Stat(Dialog.Path).Size > 4095 Then Return 
   bb = Memory buf For Write 
