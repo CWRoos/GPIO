@@ -30,7 +30,6 @@
   }
   { Tinput TextArea
     MoveScaled(2.1429,8,27.1429,53)
-    Text = ("OP 0 100\nRD\nWR A0\nWT 10\nRS 5\nWS Hello\n\n")
   }
   { Button6 Button
     MoveScaled(17,63,12,4)

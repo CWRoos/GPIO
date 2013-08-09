@@ -13,6 +13,13 @@ Public Const PIN_INPUT As Integer = 0
 
 Public fd As Integer
 Public fi As File 
+Public buf As Pointer
+
+Public Sub Form_Open()
+  
+  buf = Alloc(10)
+  
+End
 
 Public Sub Form_Close()
   
@@ -53,19 +60,19 @@ End
 Public Sub test() As Integer
   
   If fd = -1
-   Tres.Text = Tres.Text & "Device not open\n"
+   If InStr(Tres.Text, "Device not open") = 0 Then Tres.Text = Tres.Text & "Device not open\n"
    Return False
   Else
     Return True
   Endif
 End
 
-
 Public Sub Button5_Click()
 
   Dim l$, c$, r$ As String
   Dim i, y, x, t As Integer = 1
   Dim b As Byte
+  Dim bb As Stream
   If Tinput.text = "" Then Return
   Do
      y = InStr(Mid$(Tinput.text, i), "\n")
@@ -78,6 +85,31 @@ Public Sub Button5_Click()
      l$ = Mid$(l$, 3)
      l$ = LTrim$(l$)
      Select Case c$
+       Case "WG"
+            If Len(l$) < 2
+            Tres.Text = Tres.Text & "WG Data error or missing\n"
+         Else
+            bb = Memory buf For Read Write
+            x = Len(l$)
+            t = 1
+            b = 0
+            Do
+              If Val("&H" & Mid$(l$, t, 2)) = Null Then Break
+              Write #bb, Val("&H" & Mid$(l$, t, 2)) As Byte
+              t = t + 2
+              b = b + 1
+            Loop Until t > x
+            If b = 0
+              Tres.Text = Tres.Text & "WG Data error or missing\n"
+              Break
+            Endif  
+            If test() Then wiringPiSPIDataRW(fd, buf, b)
+            If test() Then Tres.Text = Tres.Text & "WG < "
+            For x = 0 To b - 1
+              If test() Then Tres.Text = Tres.text & Hex$(Byte@(buf + x), 2)
+            Next
+            If test() Then Tres.Text = Tres.text & "\n"
+         Endif
        Case "WT"
          If Val(l$) = Null
             Tres.Text = Tres.Text & "WT Data error or missing\n"

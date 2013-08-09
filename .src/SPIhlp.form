@@ -6,7 +6,7 @@
   Icon = Picture["gpio.png"]
   { Label1 Label
     MoveScaled(4,1,55,36)
-    Text = ("OP x xxx\t\t- Open device x in xxx kHz\nRD\t\t\t- Read a byte\nWR xx\t\t- Write byte xx\nRS xxx \t\t- Read a string of length xxx\nWS abcde \t- Write string\nWT xxx\t\t- Wait xxx mS max 1S\nPH x\t\t- Set GPIO pin x high\nPL x\t\t\t- Set GPIO pin x low\nWH x\t\t- Wait for GPIO pin x to go high (max wait 1S)\nWL x\t\t- Wait for GPIO pin x to go low (max wait 1S)\n\n\tRD and WR values are in Hex\n\n\tdevice = 0 or 1, kHz is 50 to 320\n\n\tLast opened device is active")
+    Text = ("OP x xxx\t\t- Open device x in xxx kHz\nRD\t\t\t- Read a byte\nWR xx\t\t- Write byte xx\nRS xxx \t\t- Read a string of length xxx\nWS abcde \t- Write string\nWG xxxx....\t- Write and Read max 8 bytes\nWT xxx\t\t- Wait xxx mS max 1S\nPH x\t\t- Set GPIO pin x high\nPL x\t\t\t- Set GPIO pin x low\nWH x\t\t- Wait for GPIO pin x to go high (max wait 1S)\nWL x\t\t- Wait for GPIO pin x to go low (max wait 1S)\n\n\tRD and WR values are in Hex\n\n\tdevice = 0 or 1, kHz is 50 to 320\n\n\tLast opened device is active")
   }
   { Button1 Button
     MoveScaled(24,38,16,4)

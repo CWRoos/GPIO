@@ -22,7 +22,6 @@
   }
   { Tinput TextArea
     MoveScaled(2,10,27.1429,53)
-    Text = ("OP 20\nRD\nWR A0\nRR 01\nWT 10\nRW 01 0D\nRR 02 W\nRW 02 12AB W\n\n")
   }
   { Tres TextArea
     MoveScaled(31.4286,10,27.1429,53)

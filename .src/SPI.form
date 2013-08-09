@@ -9,23 +9,22 @@
     MoveScaled(48,59,16,4)
     Text = ("Close")
   }
-  { output TextArea
+  { outputar TextArea
     MoveScaled(5,18,59,40)
     Font = Font["Monospace"]
-    ReadOnly = True
   }
   { Button2 Button
     MoveScaled(6,2,11,4)
     Text = ("Setup")
   }
   { Label1 Label
-    MoveScaled(6,14,13,3)
-    Text = ("Buffer     Size")
+    MoveScaled(6,14,10,3)
+    Text = ("Buffer Size")
   }
   { leng SpinBox
-    MoveScaled(19,14,9,3)
+    MoveScaled(16,14,9,3)
     MaxValue = 4096
-    Value = 255
+    Value = 1
   }
   { Label2 Label
     MoveScaled(21,3,9,3)
@@ -56,13 +55,13 @@
     Text = ("Load File")
   }
   { ish ComboBox
-    MoveScaled(49,14,14,3)
+    MoveScaled(35,14,14,3)
     ReadOnly = True
     List = [("HEX"), ("ASCII")]
     Text = ("HEX")
   }
   { Label5 Label
-    MoveScaled(38,14,10,3)
+    MoveScaled(26,14,10,3)
     Text = ("Dsplay as")
   }
   { PictureBox1 PictureBox
@@ -92,5 +91,9 @@
   { PictureBox3 PictureBox
     MoveScaled(35,8,9,5)
     Picture = Picture["spi.png"]
+  }
+  { Button3 Button
+    MoveScaled(50,14,13,3)
+    Text = ("Clear")
   }
 }
